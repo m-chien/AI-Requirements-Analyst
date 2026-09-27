@@ -1,0 +1,4 @@
+Bộ phận Nhân sự: Nhân viên có thể đặt phòng họp trước tối đa 30 ngày. Nhân viên được phép hủy đặt chỗ.
+Quản trị viên: Không thể đặt phòng quá 4 giờ liên tiếp. Không thể hủy đặt chỗ nếu thời gian đặt chỗ dưới 30 phút trước giờ họp.
+CEO: Các giám đốc điều hành nên có thể đặt phòng bất cứ lúc nào. Nếu có phòng trống, không cần phải xin phép.
+Bộ phận CNTT: Người dùng phải đăng nhập bằng email công ty của mình.

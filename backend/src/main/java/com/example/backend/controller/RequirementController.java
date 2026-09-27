@@ -1,10 +1,12 @@
 package com.example.backend.controller;
 
 import com.example.backend.ai.GeminiClient;
+import com.example.backend.dto.AnalyzeRequest;
+import com.example.backend.dto.AnalyzeResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -14,8 +16,9 @@ public class RequirementController {
     @Autowired
     private GeminiClient geminiClient;
 
-    @GetMapping("/test-ai")
-    public String testAi(@RequestParam(defaultValue = "Hello Gemini, can you give me a short summary of requirement analysis?") String prompt) {
-        return geminiClient.testGeminiApi(prompt);
+    @PostMapping("/test-ai")
+    public AnalyzeResponse testAi(@RequestBody AnalyzeRequest request) {
+        return geminiClient.testGeminiApi(request.body());
     }
+
 }

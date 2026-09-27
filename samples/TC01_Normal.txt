@@ -1,0 +1,1 @@
+Quản trị viên: Người dùng có thể xem danh sách các phòng họp trống trên trang tổng quan, chọn ngày giờ và đặt phòng. Hệ thống sau đó sẽ tự động gửi thư mời lịch họp và email xác nhận cho người đặt và những người tham dự được mời.

@@ -1,5 +1,6 @@
 package com.example.backend.ai;
 
+import com.example.backend.dto.AnalyzeResponse;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +13,43 @@ public class GeminiClient {
         this.chatClient = chatClientBuilder.build();
     }
 
-    public String testGeminiApi(String prompt) {
+    public AnalyzeResponse testGeminiApi(String content) {
+        String systemPrompt = """
+                Bạn là một Chuyên viên Phân tích Yêu cầu AI (AI Requirements Analyst).
+
+                Hãy phân tích các yêu cầu của các bên liên quan (stakeholders) do người dùng cung cấp.
+
+                Nhiệm vụ:
+                1. Trích xuất từng yêu cầu riêng lẻ.
+                2. Xác định các tác nhân (actors/personas).
+                3. Nhóm các yêu cầu theo module/chức năng.
+                4. Phát hiện các yêu cầu mơ hồ hoặc không rõ ràng.
+                5. Phát hiện các yêu cầu mâu thuẫn/xung đột.
+                6. Phát hiện các thông tin còn thiếu.
+                7. Tạo ra các câu hỏi làm rõ có ý nghĩa cho các bên liên quan.
+                8. Tạo ra các User Stories (cố gắng tạo ít nhất 10 User Stories nếu ngữ cảnh cho phép).
+                9. Xây dựng Tiêu chí chấp nhận (Acceptance Criteria) rõ ràng cho từng User Story.
+                10. Xác định những phần nào của hệ thống có thể bị ảnh hưởng khi yêu cầu thay đổi (Phân tích tác động - Impact Analysis).
+
+                Quy tắc quan trọng:
+                - Phản hồi kết quả hoàn toàn bằng Tiếng Việt.
+                - Không tự bịa ra các quyết định thay cho các bên liên quan.
+                - Không tự động giải quyết các mâu thuẫn (chỉ phát hiện và chỉ ra chúng).
+                - Đánh dấu rõ ràng các thông tin chưa rõ là "mơ hồ".
+                - Chỉ viết User Story cho các tính năng được nhắc đến rành mạch trong yêu cầu. Đối với các tính năng suy luận là CÒN THIẾU, CHỈ liệt kê vào Missing Information, TUYỆT ĐỐI KHÔNG tự bịa ra User Story.
+                - Trong User Story, trường [action] phải là hành động chủ động do chính [role] thực hiện. Không viết [role] là Người dùng nhưng [action] lại là việc của Hệ thống.
+                - TUYỆT ĐỐI CHỈ TRẢ VỀ DUY NHẤT MỘT KHỐI JSON. KHÔNG in lại đầu vào của người dùng, KHÔNG viết thêm JSON phụ, KHÔNG có văn bản giải thích.
+                """;
+
         try {
             return this.chatClient.prompt()
-                    .user(prompt)
+                    .system(systemPrompt)
+                    .user(content)
                     .call()
-                    .content();
+                    .entity(AnalyzeResponse.class);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error calling Gemini API: " + e.getMessage();
+            throw new RuntimeException("Error calling Gemini API: " + e.getMessage());
         }
     }
 }

@@ -1,0 +1,1 @@
+Hệ thống cần cho phép mời khách bên ngoài tham dự các cuộc họp. Khách bên ngoài sẽ nhận được một mã QR tạm thời qua email. Họ sẽ dùng mã QR này để quét tại quầy lễ tân để vào tòa nhà. Mã QR phải hết hạn ngay sau khi cuộc họp kết thúc 30 phút.

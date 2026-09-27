@@ -1,0 +1,1 @@
+Bảo vệ: Nhân viên bình thường chỉ có thể đặt phòng họp Tiêu chuẩn. Trưởng phòng có thể đặt cả phòng Tiêu chuẩn và phòng VIP. Giám đốc có thể đặt bất kỳ loại phòng nào và có thể hủy lịch đặt phòng của Trưởng phòng nếu có cuộc họp khẩn cấp. Quản trị hệ thống có thể cấu hình loại phòng và sức chứa nhưng không được tự đặt phòng.

@@ -1,0 +1,1 @@
+Bộ phận Nhân sự: Cổng thông tin đặt phòng họp mới phải chạy rất nhanh và dễ sử dụng. Người dùng phải tìm được phòng tốt một cách nhanh chóng mà không phải click chuột quá nhiều lần. Ngoài ra, tính năng gợi ý phòng phải thông minh và giao diện phải nhìn chuyên nghiệp.

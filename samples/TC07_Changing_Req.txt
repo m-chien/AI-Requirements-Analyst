@@ -1,0 +1,2 @@
+Khối Vận hành (Yêu cầu ban đầu - Thứ Hai): Người dùng chỉ có thể đặt phòng cho các cuộc họp diễn ra trong ngày.
+Khối Vận hành (Yêu cầu thay đổi - Thứ Tư): Thực ra, chúng tôi cần cho phép người dùng đặt các cuộc họp lặp lại (ví dụ: Thứ Hai hàng tuần lúc 9h sáng). Tuy nhiên, họ vẫn không thể đặt phòng trước quá 30 ngày. Ngoài ra, nếu một cuộc họp lặp lại rơi vào ngày nghỉ lễ, lịch đặt phòng đó phải tự động được chuyển sang ngày làm việc tiếp theo.

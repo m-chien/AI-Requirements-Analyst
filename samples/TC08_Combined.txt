@@ -1,0 +1,3 @@
+Cơ sở vật chất: Các phòng họp có các trang thiết bị khác nhau (máy chiếu, bảng trắng, hệ thống hội nghị truyền hình). Người dùng phải có khả năng lọc phòng theo loại thiết bị khi tìm kiếm.
+Bộ phận CNTT: Nếu một phòng có 'Hội nghị truyền hình' được đặt, một liên kết Zoom phải được tạo tự động qua API và đính kèm vào thư mời lịch họp.
+Bộ phận Nhân sự: Nếu một phòng được đặt cho hơn 10 người và thời gian họp kéo dài trên 2 giờ, hệ thống sẽ tự động nhắc người dùng xem họ có muốn đặt dịch vụ đồ ăn nhẹ (Catering) hay không.

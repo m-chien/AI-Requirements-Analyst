@@ -1,0 +1,1 @@
+Lễ tân: Hệ thống đặt phòng cần cho phép tôi tự động hủy lịch đặt phòng nếu phòng họp đó không có ai sử dụng sau khi cuộc họp đã bắt đầu, để nhường phòng cho người khác.
