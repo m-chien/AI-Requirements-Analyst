@@ -1,6 +1,6 @@
-package com.example.chien_java_template.repository;
+package com.example.backend.repository;
 
-import com.example.chien_java_template.model.User;
+import com.example.backend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

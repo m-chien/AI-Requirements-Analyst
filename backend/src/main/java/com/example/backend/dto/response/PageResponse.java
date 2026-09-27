@@ -1,4 +1,4 @@
-package com.example.chien_java_template.dto.response;
+package com.example.backend.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

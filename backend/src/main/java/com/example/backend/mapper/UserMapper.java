@@ -1,9 +1,9 @@
-package com.example.chien_java_template.mapper;
+package com.example.backend.mapper;
 
-import com.example.chien_java_template.dto.CreateUserDTO;
-import com.example.chien_java_template.dto.UpdateUserDTO;
-import com.example.chien_java_template.dto.UserDTO;
-import com.example.chien_java_template.model.User;
+import com.example.backend.dto.CreateUserDTO;
+import com.example.backend.dto.UpdateUserDTO;
+import com.example.backend.dto.UserDTO;
+import com.example.backend.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

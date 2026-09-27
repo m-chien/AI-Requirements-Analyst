@@ -1,13 +1,14 @@
-package com.example.chien_java_template.service;
+package com.example.backend.service;
 
-import com.example.chien_java_template.dto.request.UserLoginRequest;
-import com.example.chien_java_template.dto.response.AuthResponse;
-import com.example.chien_java_template.enums.AuthProvider;
-import com.example.chien_java_template.exception.AppException;
-import com.example.chien_java_template.exception.ErrorCode;
-import com.example.chien_java_template.mapper.UserMapper;
-import com.example.chien_java_template.model.User;
-import com.example.chien_java_template.repository.UserRepository;
+import com.example.backend.dto.request.UserLoginRequest;
+import com.example.backend.dto.response.AuthResponse;
+import com.example.backend.enums.AuthProvider;
+import com.example.backend.enums.UserRole;
+import com.example.backend.exception.AppException;
+import com.example.backend.exception.ErrorCode;
+import com.example.backend.mapper.UserMapper;
+import com.example.backend.model.User;
+import com.example.backend.repository.UserRepository;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -91,7 +92,7 @@ public class AuthService {
                         .provider(AuthProvider.GOOGLE.name())
                         .providerId(googleId)
                         .isActive(true)
-                        .role("USER")
+                        .role(UserRole.USER)
                         .build();
                 user = userRepository.save(user);
                 log.info("New user created from Google: {}", email);

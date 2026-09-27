@@ -1,6 +1,6 @@
-package com.example.chien_java_template.dto.response;
+package com.example.backend.dto.response;
 
-import com.example.chien_java_template.dto.UserDTO;
+import com.example.backend.dto.UserDTO;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

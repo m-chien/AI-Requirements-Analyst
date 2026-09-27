@@ -1,4 +1,4 @@
-package com.example.chien_java_template.utils;
+package com.example.backend.utils;
 
 public class Constants {
     // Pagination

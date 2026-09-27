@@ -1,4 +1,4 @@
-package com.example.chien_java_template.exception;
+package com.example.backend.exception;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;

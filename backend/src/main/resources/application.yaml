@@ -1,8 +1,20 @@
 spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+  ai:
+    google:
+      genai:
+        api-key: "AQ.Ab8RN6ITKMfK1YQ1woS1flP_2kaw8kjSqDPY_LiM_tP0oVMIDQ"
+        chat:
+          options:
+            model: "gemini-3.8-flash"
   datasource:
-    url:
-    username:
-    password:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: Minhchien4585!
+    driver-class-name: org.postgresql.Driver
   sql:
     init:
       mode: never
@@ -18,8 +30,6 @@ spring:
   jackson:
     time-zone: Asia/Ho_Chi_Minh
     date-format: yyyy-MM-dd
-    serialization:
-      write-dates-as-timestamps: false
   http:
     encoding:
       charset: UTF-8

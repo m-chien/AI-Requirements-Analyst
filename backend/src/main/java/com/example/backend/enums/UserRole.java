@@ -1,4 +1,4 @@
-package com.example.chien_java_template.enums;
+package com.example.backend.enums;
 
 public enum UserRole {
     ADMIN,

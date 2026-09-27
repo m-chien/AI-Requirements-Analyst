@@ -1,4 +1,4 @@
-package com.example.chien_java_template.exception;
+package com.example.backend.exception;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

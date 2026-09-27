@@ -1,4 +1,4 @@
-package com.example.chien_java_template.dto;
+package com.example.backend.dto;
 
 public class AnalyzeResponse {
 }

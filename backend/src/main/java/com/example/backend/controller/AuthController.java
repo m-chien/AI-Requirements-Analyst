@@ -1,8 +1,8 @@
-package com.example.chien_java_template.controller;
+package com.example.backend.controller;
 
-import com.example.chien_java_template.dto.request.UserLoginRequest;
-import com.example.chien_java_template.dto.response.AuthResponse;
-import com.example.chien_java_template.service.AuthService;
+import com.example.backend.dto.request.UserLoginRequest;
+import com.example.backend.dto.response.AuthResponse;
+import com.example.backend.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,13 +1,14 @@
-package com.example.chien_java_template.service;
+package com.example.backend.service;
 
-import com.example.chien_java_template.dto.CreateUserDTO;
-import com.example.chien_java_template.dto.UpdateUserDTO;
-import com.example.chien_java_template.dto.UserDTO;
-import com.example.chien_java_template.exception.AppException;
-import com.example.chien_java_template.exception.ErrorCode;
-import com.example.chien_java_template.mapper.UserMapper;
-import com.example.chien_java_template.model.User;
-import com.example.chien_java_template.repository.UserRepository;
+import com.example.backend.dto.CreateUserDTO;
+import com.example.backend.dto.UpdateUserDTO;
+import com.example.backend.dto.UserDTO;
+import com.example.backend.enums.UserRole;
+import com.example.backend.exception.AppException;
+import com.example.backend.exception.ErrorCode;
+import com.example.backend.mapper.UserMapper;
+import com.example.backend.model.User;
+import com.example.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class UserService {
 
         User user = userMapper.toEntityFromCreateDTO(createUserDTO);
         user.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
-        user.setRole("USER");
+        user.setRole(UserRole.USER);
         user.setIsActive(true);
 
         User savedUser = userRepository.save(user);

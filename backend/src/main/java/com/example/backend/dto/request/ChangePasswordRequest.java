@@ -1,4 +1,4 @@
-package com.example.chien_java_template.dto.request;
+package com.example.backend.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

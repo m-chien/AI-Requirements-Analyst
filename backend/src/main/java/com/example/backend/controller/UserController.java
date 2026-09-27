@@ -1,14 +1,14 @@
-package com.example.chien_java_template.controller;
+package com.example.backend.controller;
 
-import com.example.chien_java_template.dto.CreateUserDTO;
-import com.example.chien_java_template.dto.UpdateUserDTO;
-import com.example.chien_java_template.dto.UserDTO;
-import com.example.chien_java_template.dto.request.GoogleLoginRequest;
-import com.example.chien_java_template.dto.request.UserLoginRequest;
-import com.example.chien_java_template.dto.response.AuthResponse;
-import com.example.chien_java_template.exception.ApiResponse;
-import com.example.chien_java_template.service.AuthService;
-import com.example.chien_java_template.service.UserService;
+import com.example.backend.dto.CreateUserDTO;
+import com.example.backend.dto.UpdateUserDTO;
+import com.example.backend.dto.UserDTO;
+import com.example.backend.dto.request.GoogleLoginRequest;
+import com.example.backend.dto.request.UserLoginRequest;
+import com.example.backend.dto.response.AuthResponse;
+import com.example.backend.exception.ApiResponse;
+import com.example.backend.service.AuthService;
+import com.example.backend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.chien_java_template.ai;
+package com.example.backend.ai;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;

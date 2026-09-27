@@ -1,6 +1,6 @@
-package com.example.chien_java_template.controller;
+package com.example.backend.controller;
 
-import com.example.chien_java_template.ai.GeminiClient;
+import com.example.backend.ai.GeminiClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

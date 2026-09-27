@@ -1,4 +1,4 @@
-package com.example.chien_java_template.model;
+package com.example.backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -38,7 +38,7 @@ public class User {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private String role;
+    private com.example.backend.enums.UserRole role;
 
     @Column(columnDefinition = "boolean default true")
     private Boolean isActive;

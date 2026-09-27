@@ -1,7 +1,7 @@
-package com.example.chien_java_template.config;
+package com.example.backend.config;
 
-import com.example.chien_java_template.exception.ApiResponse;
-import com.example.chien_java_template.exception.ErrorCode;
+import com.example.backend.exception.ApiResponse;
+import com.example.backend.exception.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

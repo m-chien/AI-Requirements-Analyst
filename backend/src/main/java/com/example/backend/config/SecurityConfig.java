@@ -1,4 +1,4 @@
-package com.example.chien_java_template.config;
+package com.example.backend.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +26,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class SecurityConfig implements WebMvcConfigurer {
     @Value("${jwt.secretKey}")
     private String secretKey;
-    private final String[] PUBLIC_ENDPOINT = {};
+    private final String[] PUBLIC_ENDPOINT = {"/api/requirements/**"};
     private final String[] PRIVATE_ENDPOINT = {};
 
     @Bean

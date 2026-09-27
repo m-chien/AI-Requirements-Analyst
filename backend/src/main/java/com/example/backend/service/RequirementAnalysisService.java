@@ -1,4 +1,4 @@
-package com.example.chien_java_template.service;
+package com.example.backend.service;
 
 public class RequirementAnalysisService {
 }

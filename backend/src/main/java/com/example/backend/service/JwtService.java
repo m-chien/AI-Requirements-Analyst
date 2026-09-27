@@ -1,6 +1,6 @@
-package com.example.chien_java_template.service;
+package com.example.backend.service;
 
-import com.example.chien_java_template.model.User;
+import com.example.backend.model.User;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
