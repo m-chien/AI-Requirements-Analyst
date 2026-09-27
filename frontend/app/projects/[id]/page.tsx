@@ -117,7 +117,11 @@ export default function AIReviewPage({ params }: { params: Promise<{ id: string 
               </h2>
               <p className="text-xs text-muted-foreground mt-1">{source?.title || 'No source available'}</p>
             </div>
-            <Button variant="outline" size="sm" className="h-8 text-xs font-medium">Edit Source</Button>
+            {source && (
+              <Link href={`/projects/${project.id}/sources/${source.id}`}>
+                <Button variant="outline" size="sm" className="h-8 text-xs font-medium">Edit Source</Button>
+              </Link>
+            )}
           </div>
           <div className="flex-1 overflow-y-auto p-6">
             <div className="text-sm leading-relaxed text-foreground whitespace-pre-wrap font-medium">

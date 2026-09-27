@@ -19,12 +19,14 @@ const LanguageContext = createContext<LanguageContextType>({
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>("en")
+  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     const savedLang = localStorage.getItem("app-lang") as Language
     if (savedLang) {
       setLanguage(savedLang)
     }
+    setIsLoaded(true)
   }, [])
 
   const handleSetLanguage = (lang: Language) => {
@@ -42,6 +44,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       current = current[key]
     }
     return current as string
+  }
+
+  if (!isLoaded) {
+    return <div className="min-h-screen bg-background" /> // Prevent hydration flicker
   }
 
   return (

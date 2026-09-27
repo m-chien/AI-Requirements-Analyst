@@ -3,12 +3,74 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FolderKanban, ListTodo, MessageCircleQuestion, CheckCircle2, Clock, Plus, Activity } from "lucide-react";
+import { FolderKanban, ListTodo, MessageCircleQuestion, CheckCircle2, Clock, Plus, Activity, Search } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/components/language-provider";
+import { useStore } from "@/store/useStore";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const { projects, addProject } = useStore();
+  const router = useRouter();
+  
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [newProjectName, setNewProjectName] = useState("");
+  const [newProjectDesc, setNewProjectDesc] = useState("");
+
+  const handleCreateProject = () => {
+    if (!newProjectName.trim()) return;
+    
+    const newId = Date.now().toString();
+    const newProject = {
+      id: newId,
+      name: newProjectName,
+      key: newProjectName.substring(0, 3).toUpperCase(),
+      description: newProjectDesc,
+      status: "Draft",
+      sources: [],
+      requirements: [],
+      userStories: [],
+      ambiguities: [],
+      conflicts: [],
+      missingInfo: [],
+      questions: [],
+      actors: [],
+      updatedAt: "Just now",
+    };
+    
+    addProject(newProject);
+    
+    setIsCreateOpen(false);
+    setNewProjectName("");
+    setNewProjectDesc("");
+    router.push(`/projects/${newId}`);
+  };
+
+  // Calculate stats
+  const totalProjects = projects.length;
+  let totalReqs = 0;
+  let totalUS = 0;
+  let totalQuestions = 0;
+
+  projects.forEach(p => {
+    totalReqs += p.requirements?.length || 0;
+    totalUS += p.userStories?.length || 0;
+    totalQuestions += p.questions?.length || 0;
+  });
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -17,10 +79,51 @@ export default function Dashboard() {
           <h1 className="text-3xl font-semibold tracking-tight text-foreground">{t('dashboard.greeting')}, Trần Minh Chiến</h1>
           <p className="text-muted-foreground mt-1">{t('dashboard.subtitle')}</p>
         </div>
-        <Button className="shrink-0 bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
-          <Plus className="w-4 h-4 mr-2" />
-          {t('dashboard.createProject')}
-        </Button>
+        
+        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+          <DialogTrigger render={
+            <Button className="shrink-0 bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
+              <Plus className="w-4 h-4 mr-2" />
+              {t('dashboard.createProject')}
+            </Button>
+          } />
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>{language === 'en' ? 'Create New Project' : 'Tạo Dự án mới'}</DialogTitle>
+              <DialogDescription>
+                {language === 'en' ? 'Enter the details of your new AI requirements analysis project.' : 'Nhập thông tin cho dự án phân tích yêu cầu AI mới của bạn.'}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
+                <Label htmlFor="name">{language === 'en' ? 'Project Name' : 'Tên dự án'}</Label>
+                <Input 
+                  id="name" 
+                  value={newProjectName}
+                  onChange={(e) => setNewProjectName(e.target.value)}
+                  placeholder={language === 'en' ? 'e.g. HR Management System' : 'VD: Hệ thống Quản lý Nhân sự'} 
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="description">{language === 'en' ? 'Description' : 'Mô tả'}</Label>
+                <Textarea 
+                  id="description" 
+                  value={newProjectDesc}
+                  onChange={(e) => setNewProjectDesc(e.target.value)}
+                  placeholder={language === 'en' ? 'Brief description of the project...' : 'Mô tả ngắn gọn về dự án...'} 
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsCreateOpen(false)}>
+                {language === 'en' ? 'Cancel' : 'Hủy'}
+              </Button>
+              <Button onClick={handleCreateProject} disabled={!newProjectName.trim()}>
+                {language === 'en' ? 'Create Project' : 'Tạo dự án'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -31,7 +134,7 @@ export default function Dashboard() {
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">{t('dashboard.projects')}</p>
-              <h3 className="text-2xl font-bold">4</h3>
+              <h3 className="text-2xl font-bold">{totalProjects}</h3>
             </div>
           </CardContent>
         </Card>
@@ -43,7 +146,7 @@ export default function Dashboard() {
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">{t('dashboard.requirements')}</p>
-              <h3 className="text-2xl font-bold">48</h3>
+              <h3 className="text-2xl font-bold">{totalReqs}</h3>
             </div>
           </CardContent>
         </Card>
@@ -55,7 +158,7 @@ export default function Dashboard() {
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">{t('dashboard.openQuestions')}</p>
-              <h3 className="text-2xl font-bold">7</h3>
+              <h3 className="text-2xl font-bold">{totalQuestions}</h3>
             </div>
           </CardContent>
         </Card>
@@ -67,7 +170,7 @@ export default function Dashboard() {
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">{t('dashboard.pendingReviews')}</p>
-              <h3 className="text-2xl font-bold">12</h3>
+              <h3 className="text-2xl font-bold">{totalUS}</h3>
             </div>
           </CardContent>
         </Card>
@@ -77,66 +180,56 @@ export default function Dashboard() {
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold tracking-tight">{t('dashboard.recentProjects')}</h2>
-            <Link href="/projects" className="text-sm font-medium text-primary hover:underline">{t('dashboard.viewAll')}</Link>
+            <div className="relative w-64 hidden sm:block">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input type="search" placeholder={language === 'en' ? 'Search projects...' : 'Tìm kiếm dự án...'} className="pl-8 h-9 text-sm" />
+            </div>
           </div>
           
           <div className="grid gap-4">
-            {[
-              {
-                id: "1",
-                name: "Meeting Room Booking System",
-                desc: "Digital system for managing meeting room reservations across all company branches.",
-                statusKey: "In Progress",
-                reqs: 18,
-                us: 12,
-                questions: 4,
-                updated: "2h"
-              },
-              {
-                id: "2",
-                name: "Hospital Management System",
-                desc: "Comprehensive platform for patient records, billing, and doctor schedules.",
-                statusKey: "Draft",
-                reqs: 10,
-                us: 6,
-                questions: 3,
-                updated: "1d"
-              },
-              {
-                id: "3",
-                name: "E-commerce Platform",
-                desc: "B2C online shopping platform with cart, checkout, and inventory sync.",
-                statusKey: "In Progress",
-                reqs: 20,
-                us: 15,
-                questions: 5,
-                updated: "2d"
-              }
-            ].map((project) => (
-              <Card key={project.id} className="group hover:border-primary/30 transition-colors border-border/50 shadow-sm">
-                <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-lg text-foreground group-hover:text-primary transition-colors">
-                        <Link href={`/projects/${project.id}`}>{project.name}</Link>
-                      </CardTitle>
-                      <CardDescription className="mt-1 line-clamp-1">{project.desc}</CardDescription>
-                    </div>
-                    <Badge variant={project.statusKey === 'In Progress' ? 'default' : 'secondary'} className={project.statusKey === 'In Progress' ? 'bg-primary/10 text-primary hover:bg-primary/20 shadow-none' : ''}>
-                      {t(`dashboard.status.${project.statusKey}`)}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1.5"><ListTodo className="w-4 h-4" /> {project.reqs} {t('dashboard.requirements')}</div>
-                    <div className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> {project.us} {t('dashboard.us')}</div>
-                    <div className="flex items-center gap-1.5"><MessageCircleQuestion className="w-4 h-4" /> {project.questions} {t('dashboard.openQuestions')}</div>
-                    <div className="flex items-center gap-1.5 ml-auto text-xs"><Clock className="w-3.5 h-3.5" /> {t('dashboard.updated')} {project.updated}</div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+            {projects.length === 0 ? (
+              <div className="text-center p-12 border border-dashed rounded-xl border-border/60 bg-muted/20">
+                <FolderKanban className="mx-auto h-12 w-12 text-muted-foreground/50 mb-3" />
+                <h3 className="text-lg font-medium">{language === 'en' ? 'No projects yet' : 'Chưa có dự án nào'}</h3>
+                <p className="text-sm text-muted-foreground mt-1 mb-4">
+                  {language === 'en' ? 'Get started by creating a new project.' : 'Bắt đầu bằng cách tạo một dự án mới.'}
+                </p>
+                <Button onClick={() => setIsCreateOpen(true)} variant="outline">
+                  <Plus className="w-4 h-4 mr-2" />
+                  {t('dashboard.createProject')}
+                </Button>
+              </div>
+            ) : (
+              projects.map((project) => {
+                const reqCount = project.requirements?.length || 0;
+                const isDraft = project.status === 'draft';
+                
+                return (
+                  <Card key={project.id} className="group hover:border-primary/30 transition-colors border-border/50 shadow-sm cursor-pointer" onClick={() => router.push(`/projects/${project.id}`)}>
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <CardTitle className="text-lg text-foreground group-hover:text-primary transition-colors">
+                            {project.name}
+                          </CardTitle>
+                          <CardDescription className="mt-1 line-clamp-1">{project.description}</CardDescription>
+                        </div>
+                        <Badge variant={isDraft ? 'secondary' : 'default'} className={!isDraft ? 'bg-primary/10 text-primary hover:bg-primary/20 shadow-none' : ''}>
+                          {isDraft ? (language === 'en' ? 'Draft' : 'Bản nháp') : (language === 'en' ? 'In Progress' : 'Đang xử lý')}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-1.5"><ListTodo className="w-4 h-4" /> {reqCount} {t('dashboard.requirements')}</div>
+                        <div className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> {project.sources.length} Sources</div>
+                        <div className="flex items-center gap-1.5 ml-auto text-xs"><Clock className="w-3.5 h-3.5" /> Updated recently</div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })
+            )}
           </div>
         </div>
 

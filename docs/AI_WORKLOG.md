@@ -22,3 +22,21 @@ Tài liệu này ghi lại quá trình kiểm thử các kết quả do AI phân
 - **Cải tiến System Prompt:** Bổ sung ngay 2 quy tắc cứng vào file `GeminiClient.java`:
   > 1. *"Chỉ viết User Story cho các tính năng được nhắc đến rành mạch trong yêu cầu. Đối với các tính năng bạn suy luận là CÒN THIẾU, CHỈ liệt kê vào Missing Information, TUYỆT ĐỐI KHÔNG tự bịa ra User Story cho chúng."*
   > 2. *"Trong User Story, trường [action] phải là hành động chủ động do chính [role] thực hiện. Không viết [role] là Người dùng nhưng [action] lại là việc của Hệ thống."*
+
+---
+
+### [Log #002] Test Case 2 & Hoàn thiện Frontend: Phát hiện Ambiguity và Tối ưu UI/UX
+**1. Ngữ cảnh (Scenario):**
+- Phân tích TC02_Ambiguous.txt với các yêu cầu mang tính cảm tính (Phi chức năng): "chạy rất nhanh", "dễ sử dụng", "giao diện chuyên nghiệp".
+- Hoàn thiện luồng người dùng trên Frontend: Kết nối `useProjectStore` vào Dashboard và Source Editor.
+
+**2. Kết quả của AI (Vấn đề phát hiện):**
+- AI bắt trọn 100% các từ ngữ cảm tính và dịch chúng thành các câu hỏi định lượng (Stakeholder Questions) xuất sắc (VD: Đề xuất dùng chỉ số SUS để đo lường "dễ sử dụng").
+- Tuy nhiên, AI đã vi phạm quy tắc "Không tạo User Story cho yêu cầu Phi Chức Năng (Non-functional)" bằng cách cố lách luật tạo User Story cho tính năng UI.
+
+**3. Phản biện của BA (Human Review):**
+- Mặc dù AI vi phạm luật, nhưng Acceptance Criteria nó sinh ra cho UI lại rất thực tế và có thể đo lường (Testable). BA quyết định giữ lại để Tester có base test giao diện.
+- Dashboard và Source Editor đã hoạt động trơn tru. Hệ thống giờ đây có thể thao tác hoàn chỉnh từ lúc Tạo Project mới -> Nhập Raw Requirement -> Phân tích AI.
+
+**4. Giải pháp về API Quota:**
+- Hạn mức Google Gemini bị giới hạn nghiêm ngặt theo Google Cloud Project / Gmail (Không phải theo từng API Key). Để vượt qua, Team Dev đã áp dụng quy trình cấp API Key từ các tài khoản Gmail độc lập (Ẩn danh) để reset toàn bộ Quota.
