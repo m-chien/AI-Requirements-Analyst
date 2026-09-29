@@ -8,7 +8,7 @@ public record AnalyzeResponse(
     List<String> conflicts,
     List<String> ambiguities,
     List<String> missingInformation,
-    List<String> stakeholderQuestions,
+    List<StakeholderQuestion> stakeholderQuestions,
     List<String> impactAnalysis,
     List<UserStory> userStories
 ) {
@@ -24,5 +24,10 @@ public record AnalyzeResponse(
         String action,
         String benefit,
         List<String> acceptanceCriteria
+    ) {}
+
+    public record StakeholderQuestion(
+        String question,
+        String targetStakeholder
     ) {}
 }

@@ -7,7 +7,7 @@ import com.example.backend.enums.UserRole;
 import com.example.backend.exception.AppException;
 import com.example.backend.exception.ErrorCode;
 import com.example.backend.mapper.UserMapper;
-import com.example.backend.model.User;
+import com.example.backend.entity.User;
 import com.example.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -50,7 +51,7 @@ public class UserService {
         return userMapper.toDTO(savedUser);
     }
 
-    public UserDTO getUserById(Long id) {
+    public UserDTO getUserById(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
         return userMapper.toDTO(user);
@@ -75,7 +76,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO updateUser(Long id, UpdateUserDTO updateUserDTO) {
+    public UserDTO updateUser(UUID id, UpdateUserDTO updateUserDTO) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
@@ -85,7 +86,7 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(Long id) {
+    public void deleteUser(UUID id) {
         if (!userRepository.existsById(id)) {
             throw new RuntimeException("User not found with id: " + id);
         }
@@ -93,7 +94,7 @@ public class UserService {
     }
 
     @Transactional
-    public void updateLastLogin(Long userId) {
+    public void updateLastLogin(UUID userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         user.setLastLoginAt(LocalDateTime.now());
@@ -101,7 +102,7 @@ public class UserService {
     }
 
     @Transactional
-    public void activateUser(Long id) {
+    public void activateUser(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
         user.setIsActive(true);
@@ -109,7 +110,7 @@ public class UserService {
     }
 
     @Transactional
-    public void deactivateUser(Long id) {
+    public void deactivateUser(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
         user.setIsActive(false);

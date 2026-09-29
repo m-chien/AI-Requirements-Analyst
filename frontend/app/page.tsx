@@ -19,45 +19,85 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
   const { t, language } = useLanguage();
-  const { projects, addProject } = useStore();
+  const { projects, addProject, setProjects } = useStore();
   const router = useRouter();
   
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectDesc, setNewProjectDesc] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleCreateProject = () => {
+  // Lấy danh sách project từ backend khi vào Dashboard
+  useEffect(() => {
+    fetch("http://localhost:8080/api/projects")
+      .then(res => res.json())
+      .then(data => {
+        // Backend trả về mảng Project, ta lưu vào Zustand
+        setProjects(data.map((p: any) => ({
+          ...p,
+          sources: p.sources || [],
+          requirements: p.requirements || [],
+          userStories: p.userStories || [],
+          ambiguities: p.ambiguities || [],
+          conflicts: p.conflicts || [],
+          missingInfo: p.missingInfo || [],
+          questions: p.questions || [],
+          actors: p.actors || []
+        })));
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to fetch projects:", err);
+        setIsLoading(false);
+      });
+  }, [setProjects]);
+
+  const handleCreateProject = async () => {
     if (!newProjectName.trim()) return;
     
-    const newId = Date.now().toString();
-    const newProject = {
-      id: newId,
-      name: newProjectName,
-      key: newProjectName.substring(0, 3).toUpperCase(),
-      description: newProjectDesc,
-      status: "Draft",
-      sources: [],
-      requirements: [],
-      userStories: [],
-      ambiguities: [],
-      conflicts: [],
-      missingInfo: [],
-      questions: [],
-      actors: [],
-      updatedAt: "Just now",
-    };
-    
-    addProject(newProject);
-    
-    setIsCreateOpen(false);
-    setNewProjectName("");
-    setNewProjectDesc("");
-    router.push(`/projects/${newId}`);
+    try {
+      const response = await fetch("http://localhost:8080/api/projects", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: newProjectName,
+          description: newProjectDesc
+        })
+      });
+      
+      if (!response.ok) throw new Error("Failed to create project");
+      
+      const savedProject = await response.json();
+      
+      const newProject = {
+        ...savedProject,
+        key: newProjectName.substring(0, 3).toUpperCase(),
+        sources: [],
+        requirements: [],
+        userStories: [],
+        ambiguities: [],
+        conflicts: [],
+        missingInfo: [],
+        questions: [],
+        actors: [],
+        updatedAt: "Just now",
+      };
+      
+      addProject(newProject);
+      setIsCreateOpen(false);
+      setNewProjectName("");
+      setNewProjectDesc("");
+      router.push(`/projects/${savedProject.id}`);
+    } catch (error) {
+      console.error("Error creating project:", error);
+    }
   };
 
   // Calculate stats

@@ -1,0 +1,179 @@
+{
+    "actors": [
+        "Người dùng (Người đặt phòng)",
+        "Người tham dự cuộc họp",
+        "Quản trị viên hệ thống",
+        "Hệ thống tự động"
+    ],
+    "requirements": [
+        {
+            "id": "REQ-01",
+            "description": "Hệ thống phải hiển thị danh sách các phòng họp còn trống trên trang tổng quan.",
+            "type": "Chức năng",
+            "module": "Trang tổng quan"
+        },
+        {
+            "id": "REQ-02",
+            "description": "Hệ thống phải cho phép người dùng chọn ngày và khung thời gian để tìm kiếm phòng trống.",
+            "type": "Chức năng",
+            "module": "Tìm kiếm & Lọc"
+        },
+        {
+            "id": "REQ-03",
+            "description": "Hệ thống phải cho phép người dùng thực hiện thao tác đặt phòng họp đã chọn.",
+            "type": "Chức năng",
+            "module": "Đặt phòng"
+        },
+        {
+            "id": "REQ-04",
+            "description": "Hệ thống phải cho phép người dùng thêm danh sách người tham dự vào cuộc họp khi tiến hành đặt phòng.",
+            "type": "Chức năng",
+            "module": "Đặt phòng"
+        },
+        {
+            "id": "REQ-05",
+            "description": "Hệ thống phải tự động gửi email xác nhận đặt phòng thành công cho người đặt.",
+            "type": "Chức năng",
+            "module": "Thông báo"
+        },
+        {
+            "id": "REQ-06",
+            "description": "Hệ thống phải tự động gửi thư mời lịch họp đến người đặt và tất cả người tham dự được chỉ định.",
+            "type": "Chức năng",
+            "module": "Thông báo & Tích hợp Lịch"
+        },
+        {
+            "id": "REQ-07",
+            "description": "Hệ thống phải ngăn chặn việc hai cuộc họp bị đặt trùng phòng và trùng khung giờ.",
+            "type": "Phi chức năng (Quy tắc nghiệp vụ)",
+            "module": "Đặt phòng"
+        }
+    ],
+    "conflicts": [
+        "Xung đột về trạng thái đặt phòng đồng thời (concurrency): Chưa có cơ chế giải quyết khi hai người dùng cùng thao tác chọn và đặt cùng một phòng trong cùng một khung giờ."
+    ],
+    "ambiguities": [
+        "Khái niệm 'thư mời lịch họp' và 'email xác nhận' chưa rõ là hai thông điệp riêng biệt hay là một email duy nhất có đính kèm tệp lịch (ví dụ .ics).",
+        "Chưa định rõ 'người dùng' là bất kỳ ai truy cập hệ thống hay bắt buộc phải là nhân viên đã đăng nhập và xác thực.",
+        "Hình thức nhập danh sách 'những người tham dự được mời' chưa rõ ràng (nhập thủ công địa chỉ email hay chọn từ danh bạ tài khoản nội bộ).",
+        "Trạng thái phòng 'trống' chưa xác định rõ có bao gồm khoảng đệm thời gian (buffer time) dọn dẹp/chuẩn bị giữa 2 cuộc họp hay không."
+    ],
+    "missingInformation": [
+        "Chính sách hủy phòng hoặc thay đổi lịch họp (thời hạn được hủy, thông báo hủy gửi cho ai).",
+        "Quy định về thời gian đặt phòng: Đặt trước tối đa bao nhiêu ngày, thời lượng tối thiểu/tối đa cho một lượt đặt.",
+        "Thông tin chi tiết về phòng họp (sức chứa tối đa, trang thiết bị đi kèm như máy chiếu, bảng viết, hệ thống họp trực tuyến).",
+        "Quy trình xử lý khi người tham dự phản hồi thư mời (Chấp nhận, Từ chối, Phân vân).",
+        "Quyền hạn của Quản trị viên trong việc can thiệp, hủy hoặc ưu tiên chiếm quyền sử dụng phòng họp."
+    ],
+    "stakeholderQuestions": [
+        "Thư mời lịch họp cần hỗ trợ định dạng hoặc giao thức nào (tệp .ics đính kèm, đồng bộ trực tiếp với Google Calendar hay Microsoft Outlook 365)?",
+        "Có giới hạn số lượng người tham dự tối đa dựa trên sức chứa thực tế của phòng họp hay không?",
+        "Hệ thống có cho phép người đặt chỉnh sửa thông tin hoặc hủy phòng đã đặt không? Nếu có, quy trình gửi email hủy/dời lịch được xử lý thế nào?",
+        "Người dùng có cần quyền hạn đặc biệt (hoặc phê duyệt từ Quản trị viên) đối với một số phòng họp quan trọng (ví dụ: phòng họp Hội đồng quản trị) không?",
+        "Trường hợp hai người cùng thao tác đặt một phòng tại cùng một giây, hệ thống sẽ ưu tiên ai và hiển thị thông báo lỗi như thế nào cho người còn lại?"
+    ],
+    "impactAnalysis": [
+        "Module Quản trị phòng họp: Bị ảnh hưởng nếu phát sinh thay đổi về thuộc tính phòng (sức chứa, thiết bị, trạng thái bảo trì).",
+        "Module Lịch và Đặt chỗ (Booking Engine): Chịu tác động lớn nhất khi thay đổi quy tắc kiểm tra phòng trống, xử lý trùng lịch và lưu trữ giao dịch.",
+        "Hệ thống Thông báo & Tích hợp Email/Lịch: Ảnh hưởng đến dịch vụ gửi mail (SMTP, SendGrid, Microsoft Graph, Google Calendar API) khi định dạng thư mời hoặc mẫu email thay đổi.",
+        "Giao diện Trang tổng quan (Dashboard): Cần thiết kế lại hiển thị trực quan (theo dạng lưới, lịch Gantt hoặc danh sách) nếu bổ sung thêm các bộ lọc trạng thái phòng.",
+        "Hệ thống Quản lý tài khoản và Phân quyền: Bị ảnh hưởng nếu áp dụng chính sách giới hạn quyền đặt phòng theo phòng ban hoặc cấp bậc."
+    ],
+    "userStories": [
+        {
+            "role": "Người dùng",
+            "action": "xem danh sách các phòng họp còn trống trên trang tổng quan",
+            "benefit": "nhanh chóng nắm bắt được các phòng khả dụng mà không mất thời gian tìm kiếm thủ công",
+            "acceptanceCriteria": [
+                "Hiển thị đầy đủ tên phòng, vị trí và trạng thái 'Trống' theo thời gian thực.",
+                "Dữ liệu tự động làm mới hoặc cập nhật khi có phòng thay đổi trạng thái từ trống sang bận."
+            ]
+        },
+        {
+            "role": "Người dùng",
+            "action": "chọn ngày và giờ cụ thể để tìm phòng họp",
+            "benefit": "tìm được phòng trống khớp chính xác với lịch dự kiến của cuộc họp",
+            "acceptanceCriteria": [
+                "Giao diện cung cấp bộ chọn ngày (Date Picker) và chọn khung giờ bắt đầu - kết thúc.",
+                "Hệ thống hiển thị thông báo lỗi nếu người dùng chọn ngày/giờ trong quá khứ.",
+                "Danh sách phòng họp được lọc tương ứng với khung thời gian đã chọn."
+            ]
+        },
+        {
+            "role": "Người dùng",
+            "action": "thực hiện đặt một phòng họp cụ thể",
+            "benefit": "giữ phòng phục vụ cho cuộc họp công việc",
+            "acceptanceCriteria": [
+                "Người dùng có thể chọn một phòng trống từ danh sách và bấm nút 'Đặt phòng'.",
+                "Hệ thống yêu cầu nhập tiêu đề cuộc họp trước khi xác nhận.",
+                "Hệ thống hiển thị thông báo đặt phòng thành công sau khi hoàn tất."
+            ]
+        },
+        {
+            "role": "Người dùng",
+            "action": "nhập danh sách người tham dự khi đặt phòng",
+            "benefit": "thông báo đến các đồng nghiệp cần tham gia cuộc họp",
+            "acceptanceCriteria": [
+                "Cung cấp trường nhập địa chỉ email của người tham dự.",
+                "Hỗ trợ nhập nhiều email cách nhau bởi dấu phẩy hoặc chọn từ danh sách gợi ý.",
+                "Hệ thống kiểm tra định dạng email hợp lệ trước khi gửi yêu cầu đặt phòng."
+            ]
+        },
+        {
+            "role": "Người dùng",
+            "action": "nhận email xác nhận đặt phòng tự động",
+            "benefit": "có bằng chứng xác thực việc đặt phòng thành công và lưu trữ thông tin đối chiếu",
+            "acceptanceCriteria": [
+                "Email được gửi đến hộp thư của người đặt ngay sau khi đặt phòng thành công trong vòng tối đa 1 phút.",
+                "Nội dung email bao gồm: Tên phòng, Thời gian bắt đầu/kết thúc, Tiêu đề cuộc họp và Danh sách người tham gia."
+            ]
+        },
+        {
+            "role": "Người tham dự",
+            "action": "nhận được thư mời lịch họp tự động qua email",
+            "benefit": "biết được lịch trình, thời gian, địa điểm để sắp xếp công việc tham dự đúng giờ",
+            "acceptanceCriteria": [
+                "Người tham dự nhận được email chứa đầy đủ thông tin cuộc họp và người chủ trì.",
+                "Email có đính kèm tệp lịch iCalendar (.ics) cho phép người nhận thêm trực tiếp vào ứng dụng lịch cá nhân.",
+                "Người tham dự có thể chọn Chấp nhận hoặc Từ chối lời mời."
+            ]
+        },
+        {
+            "role": "Người dùng",
+            "action": "hệ thống kiểm tra và ngăn chặn trùng lịch",
+            "benefit": "tránh tình trạng hai nhóm sử dụng chung một phòng vào cùng một thời điểm",
+            "acceptanceCriteria": [
+                "Nếu phòng đã có người đặt trong khoảng thời gian đã chọn, phòng đó không xuất hiện trong danh sách khả dụng.",
+                "Nếu xảy ra xung đột thao tác đồng thời, hệ thống báo lỗi rõ ràng cho người thực hiện sau: 'Phòng đã được người khác đặt trong khoảng thời gian này'."
+            ]
+        },
+        {
+            "role": "Người dùng",
+            "action": "hủy phòng họp đã đặt",
+            "benefit": "giải phóng phòng cho người khác sử dụng khi kế hoạch cuộc họp bị thay đổi",
+            "acceptanceCriteria": [
+                "Người dùng có thể xem danh sách các cuộc họp mình đã đặt.",
+                "Có nút 'Hủy đặt phòng' đối với các cuộc họp sắp diễn ra.",
+                "Sau khi hủy, hệ thống cập nhật lại trạng thái phòng là 'Trống'."
+            ]
+        },
+        {
+            "role": "Người tham dự",
+            "action": "nhận thông báo khi cuộc họp bị hủy hoặc thay đổi",
+            "benefit": "kịp thời cập nhật kế hoạch làm việc mà không bị lãng phí thời gian",
+            "acceptanceCriteria": [
+                "Khi cuộc họp bị hủy hoặc dời lịch, hệ thống gửi email thông báo hủy/cập nhật đến toàn bộ danh sách người tham dự.",
+                "File lịch cập nhật trạng thái CANCELLED trên ứng dụng lịch của người nhận."
+            ]
+        },
+        {
+            "role": "Quản trị viên",
+            "action": "theo dõi và quản lý việc sử dụng tất cả các phòng họp",
+            "benefit": "đảm bảo tài nguyên phòng họp của công ty được điều phối và sử dụng hợp lý",
+            "acceptanceCriteria": [
+                "Trang tổng quan hiển thị lịch đặt phòng tổng thể của toàn bộ công ty.",
+                "Quản trị viên có quyền xem chi tiết ai đã đặt phòng nào và có thể hủy lượt đặt nếu cần thiết vì lý do khẩn cấp."
+            ]
+        }
+    ]
+}

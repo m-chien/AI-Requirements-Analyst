@@ -1,0 +1,122 @@
+
+
+{
+    "actors": [
+        "Người dùng (Nhân viên sử dụng cổng thông tin)",
+        "Bộ phận Nhân sự (Bên liên quan / Đơn vị yêu cầu)"
+    ],
+    "requirements": [
+        {
+            "id": "REQ-01",
+            "description": "Cổng thông tin đặt phòng họp mới phải chạy rất nhanh.",
+            "type": "Phi chức năng",
+            "module": "Hiệu năng hệ thống"
+        },
+        {
+            "id": "REQ-02",
+            "description": "Cổng thông tin phải dễ sử dụng và hạn chế tối đa số lần click chuột khi thao tác.",
+            "type": "Phi chức năng",
+            "module": "Trải nghiệm người dùng (UX)"
+        },
+        {
+            "id": "REQ-03",
+            "description": "Người dùng có thể tìm được phòng họp tốt một cách nhanh chóng mà không cần qua quá nhiều thao tác/click chuột.",
+            "type": "Chức năng",
+            "module": "Tìm kiếm phòng họp"
+        },
+        {
+            "id": "REQ-04",
+            "description": "Cung cấp tính năng gợi ý phòng họp thông minh cho người dùng.",
+            "type": "Chức năng",
+            "module": "Gợi ý phòng họp"
+        },
+        {
+            "id": "REQ-05",
+            "description": "Giao diện cổng thông tin phải được thiết kế nhìn chuyên nghiệp.",
+            "type": "Phi chức năng",
+            "module": "Giao diện người dùng (UI)"
+        }
+    ],
+    "conflicts": [
+        "Tiềm ẩn xung đột kỹ thuật: Yêu cầu 'chạy rất nhanh' có thể gặp thách thức khi xử lý 'tính năng gợi ý phòng thông minh' nếu thuật toán gợi ý đòi hỏi truy vấn và tính toán phức tạp mà không có giải pháp caching/tối ưu phù hợp.",
+        "Không phát hiện mâu thuẫn trực tiếp dạng loại trừ nhau giữa các câu lệnh trong văn bản yêu cầu hiện tại."
+    ],
+    "ambiguities": [
+        "Cụm từ 'chạy rất nhanh' mang tính cảm tính, chưa có chỉ số định lượng cụ thể (ví dụ: thời gian phản hồi hoặc tải trang dưới bao nhiêu giây/mili-giây).",
+        "Cụm từ 'dễ sử dụng' chưa có tiêu chí đo lường rõ ràng (ví dụ: chỉ số SUS - System Usability Scale, thời gian làm quen hệ thống).",
+        "Khái niệm 'phòng tốt' chưa được định nghĩa (dựa trên sức chứa, trang thiết bị, ánh sáng, vị trí hay đánh giá từ người dùng).",
+        "Cụm từ 'không phải click chuột quá nhiều lần' không nêu rõ giới hạn số lần click tối đa để hoàn tất việc tìm/chọn phòng.",
+        "Khái niệm 'gợi ý phòng phải thông minh' chưa rõ logic hay thuật toán căn cứ vào dữ liệu gì (lịch sử đặt, số lượng người, mục đích cuộc họp hay trang thiết bị).",
+        "Khái niệm 'giao diện phải nhìn chuyên nghiệp' mang tính định tính, chưa có bộ quy chuẩn thiết kế (Design System) hoặc phong cách cụ thể."
+    ],
+    "missingInformation": [
+        "Quy trình đặt và xác nhận phòng họp hoàn chỉnh (các bước xác nhận, giữ chỗ, hoặc hủy phòng).",
+        "Danh mục thuộc tính và thông tin chi tiết của phòng họp (sức chứa, tiện ích, thiết bị trình chiếu, vị trí tòa nhà/tầng).",
+        "Quy tắc và quyền hạn đặt phòng (ai được quyền đặt phòng nào, thời gian đặt trước tối đa/tối thiểu).",
+        "Khả năng tích hợp với hệ thống lịch hiện có của doanh nghiệp (như Microsoft 365/Outlook, Google Workspace).",
+        "Cách thức xử lý tình huống khi không có phòng phù hợp hoặc tất cả phòng đều kín lịch."
+    ],
+    "stakeholderQuestions": [
+        "Mục tiêu thời gian tải trang và thời gian phản hồi khi tìm kiếm phòng họp cụ thể là bao nhiêu giây (ví dụ: dưới 2 giây)?",
+        "Số lần click chuột tối đa được coi là chấp nhận được để người dùng tìm và chọn được phòng là bao nhiêu click?",
+        "Tiêu chí cụ thể để một phòng được coi là 'phòng tốt' gồm những yếu tố nào (diện tích, trang thiết bị, vị trí)?",
+        "Tính năng 'gợi ý thông minh' cần dựa trên các tham số đầu vào nào (số người dự họp, thiết bị yêu cầu, vị trí phòng ban, hay lịch sử cá nhân)?",
+        "Doanh nghiệp đã có sẵn cẩm nang nhận diện thương hiệu hoặc Design System nào để định nghĩa cho tiêu chuẩn 'giao diện chuyên nghiệp' chưa?",
+        "Cổng thông tin có cần đồng bộ lịch tự động với hệ thống email/lịch hiện tại của công ty không?"
+    ],
+    "impactAnalysis": [
+        "Thay đổi thuật toán gợi ý phòng thông minh: Tác động trực tiếp đến cấu trúc truy vấn CSDL, hiệu năng backend và thời gian phản hồi của hệ thống.",
+        "Thay đổi tiêu chí 'phòng tốt': Tác động đến mô hình dữ liệu (Database Schema) của phòng họp, bảng đánh giá/tiêu chuẩn phòng và bộ lọc tìm kiếm.",
+        "Tối ưu hóa quy trình click chuột: Tác động đến cấu trúc điều hướng (Navigation Flow), thiết kế giao diện (UI) và trải nghiệm người dùng (UX) trên Frontend.",
+        "Yêu cầu tốc độ tải trang cao: Tác động đến hạ tầng triển khai (bộ nhớ đệm Cache/Redis, CDN, cấu hình máy chủ web) và giải pháp tối ưu mã nguồn Frontend/Backend."
+    ],
+    "userStories": [
+        {
+            "role": "Người dùng",
+            "action": "thực hiện tìm kiếm phòng họp với số bước thao tác tối thiểu",
+            "benefit": "nhanh chóng tìm được phòng họp ưng ý mà không mất nhiều thời gian thao tác click chuột",
+            "acceptanceCriteria": [
+                "Người dùng có thể nhập tiêu chí tìm kiếm cơ bản ngay tại màn hình chính.",
+                "Quy trình tìm kiếm từ lúc nhập tiêu chí đến khi hiển thị kết quả không vượt quá 2 lần click chuột.",
+                "Kết quả tìm kiếm hiển thị danh sách phòng phù hợp trong thời gian dưới 2 giây."
+            ]
+        },
+        {
+            "role": "Người dùng",
+            "action": "xem danh sách các phòng họp được đánh giá là 'phòng tốt'",
+            "benefit": "dễ dàng lựa chọn phòng họp có chất lượng và điều kiện phù hợp cho cuộc họp",
+            "acceptanceCriteria": [
+                "Danh sách hiển thị các phòng có gắn nhãn hoặc xếp hạng ưu tiên rõ ràng.",
+                "Thông tin tóm tắt về đặc điểm nổi bật của phòng được hiển thị trực quan ngay trên danh sách kết quả."
+            ]
+        },
+        {
+            "role": "Người dùng",
+            "action": "xem các gợi ý phòng họp thông minh do hệ thống đề xuất",
+            "benefit": "tiết kiệm thời gian tự lọc và tìm kiếm phòng họp thủ công",
+            "acceptanceCriteria": [
+                "Khu vực gợi ý phòng họp hiển thị nổi bật trên giao diện.",
+                "Các gợi ý hiển thị kèm lý do đề xuất (ví dụ: phòng phù hợp với số lượng người hoặc thường xuyên được sử dụng)."
+            ]
+        },
+        {
+            "role": "Người dùng",
+            "action": "chọn trực tiếp một phòng họp từ danh sách gợi ý thông minh",
+            "benefit": "rút ngắn tối đa quy trình chọn phòng chỉ với một lượt click",
+            "acceptanceCriteria": [
+                "Người dùng có thể chọn phòng được gợi ý chỉ bằng một cú nhấp chuột.",
+                "Phòng được chọn ngay lập tức chuyển sang trạng thái sẵn sàng để xác nhận đặt."
+            ]
+        },
+        {
+            "role": "Người dùng",
+            "action": "tương tác với giao diện cổng thông tin được thiết kế chuyên nghiệp và trực quan",
+            "benefit": "dễ dàng thao tác, không bị rối mắt và nâng cao trải nghiệm làm việc",
+            "acceptanceCriteria": [
+                "Bố cục màn hình rõ ràng, màu sắc đồng bộ, phông chữ dễ đọc.",
+                "Các nút thao tác chính (Call to Action) hiển thị rõ nét và dễ nhận diện.",
+                "Thời gian tải toàn bộ thành phần giao diện không quá ngưỡng quy định về hiệu năng."
+            ]
+        }
+    ]
+}

@@ -18,27 +18,66 @@ import { useRouter } from "next/navigation";
 export default function SourceEditorPage({ params }: { params: Promise<{ id: string, sourceId: string }> }) {
   const { language } = useLanguage();
   const router = useRouter();
-  const { projects, updateSource, setActiveProject } = useStore();
+  const { projects, updateSource, setActiveProject, updateProject } = useStore();
   
   const unwrappedParams = use(params);
   const projectId = unwrappedParams.id;
   const sourceId = unwrappedParams.sourceId;
 
-  const project = projects.find(p => p.id === projectId);
-  const originalSource = project?.sources.find(s => s.id === sourceId);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [localProject, setLocalProject] = useState<any>(null);
   const [sourceData, setSourceData] = useState<SourceDocument | null>(null);
   const [isDirty, setIsDirty] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   useEffect(() => {
     setActiveProject(projectId);
-    if (originalSource) {
-      setSourceData({ ...originalSource });
+    
+    const storeProject = projects.find(p => p.id === projectId);
+    const storeSource = storeProject?.sources?.find((s: any) => s.id === sourceId);
+
+    if (storeProject && storeSource) {
+      setLocalProject(storeProject);
+      setSourceData({ ...storeSource });
+    } else {
+      setIsLoading(true);
+      fetch(`http://localhost:8080/api/projects/${projectId}`)
+        .then(res => res.json())
+        .then(data => {
+           setLocalProject({
+             ...data,
+             sources: data.sources || [],
+             requirements: data.requirements || [],
+             userStories: data.userStories || [],
+             ambiguities: data.ambiguities || [],
+             conflicts: data.conflicts || [],
+             missingInfo: data.missingInfo || [],
+             questions: data.questions || [],
+             actors: data.actors || []
+           });
+           
+           // Sync fetched data back to Zustand
+           updateProject(projectId, {
+             sources: data.sources || [],
+             actors: data.actors || []
+           });
+
+           const s = data.sources?.find((s: any) => s.id === sourceId);
+           if (s) setSourceData({ ...s });
+           setIsLoading(false);
+        })
+        .catch(err => {
+          console.error("Failed to fetch project:", err);
+          setIsLoading(false);
+        });
     }
-  }, [projectId, sourceId, originalSource, setActiveProject]);
+  }, [projectId, sourceId, setActiveProject, projects]);
+
+  const project = localProject;
+  const originalSource = project?.sources?.find((s: any) => s.id === sourceId);
 
   if (!project || !sourceData) {
-    return <div className="p-8 text-center text-muted-foreground">Source document not found.</div>;
+    return <div className="p-8 text-center text-muted-foreground">Đang tải tài liệu gốc...</div>;
   }
 
   const handleContentChange = (val: string) => {
@@ -60,16 +99,102 @@ export default function SourceEditorPage({ params }: { params: Promise<{ id: str
     }
   };
 
-  const handleSaveAndAnalyze = () => {
-    // 1. Save data
+  const handleSaveAndAnalyze = async () => {
     updateSource(projectId, sourceId, { ...sourceData, status: 'Analyzed' });
     setIsDirty(false);
-    toast.success(language === 'en' ? "Source saved. Starting AI Analysis..." : "Đã lưu. Bắt đầu phân tích bằng AI...");
+    setIsAnalyzing(true);
+    toast.info(language === 'en' ? "Starting AI Analysis... This might take a few seconds." : "Đang phân tích bằng AI... Quá trình này có thể mất vài giây.");
     
-    // 2. Redirect back to review page (simulate AI processing finished)
-    setTimeout(() => {
+    try {
+      const response = await fetch("http://localhost:8080/api/requirements/test-ai", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ body: sourceData.content })
+      });
+
+      if (!response.ok) {
+        let errorMessage = "Failed to analyze";
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorData.error || errorMessage;
+        } catch (e) {
+          errorMessage = await response.text() || errorMessage;
+        }
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+      console.log("data", data);
+
+      // Transform data to match the store's interface
+      const generateId = (prefix: string) => `${prefix}-${Math.floor(Math.random() * 10000)}`;
+
+      const newRequirements = (data.requirements || []).map((r: any) => ({
+        id: r.id || generateId("REQ"),
+        text: r.description,
+        module: r.module,
+        type: r.type,
+        traceability: "INFERRED",
+        status: "Needs Review",
+        sourceEvidence: "Extracted from source"
+      }));
+
+      const newUserStories = (data.userStories || []).map((us: any) => ({
+        id: generateId("US"),
+        role: us.role,
+        action: us.action,
+        benefit: us.benefit,
+        acceptanceCriteria: us.acceptanceCriteria || [],
+        status: "Needs Review"
+      }));
+
+      const newConflicts = (data.conflicts || []).map((c: string) => ({
+        id: generateId("CONF"),
+        description: c,
+        status: "Needs Clarification"
+      }));
+
+      const newAmbiguities = (data.ambiguities || []).map((a: string) => ({
+        id: generateId("AMB"),
+        problem: a,
+        status: "Needs Clarification"
+      }));
+
+      const newMissingInfo = (data.missingInformation || []).map((m: string) => ({
+        id: generateId("MISS"),
+        description: m,
+        status: "Needs Review"
+      }));
+
+      const newQuestions = (data.stakeholderQuestions || []).map((q: any) => ({
+        id: generateId("Q"),
+        question: typeof q === 'string' ? q : `${q.targetStakeholder ? '[' + q.targetStakeholder + '] ' : ''}${q.question}`,
+        status: "Open"
+      }));
+
+      // Append to the project
+      updateProject(projectId, {
+        requirements: [...(project.requirements || []), ...newRequirements],
+        userStories: [...(project.userStories || []), ...newUserStories],
+        conflicts: [...(project.conflicts || []), ...newConflicts],
+        ambiguities: [...(project.ambiguities || []), ...newAmbiguities],
+        missingInfo: [...(project.missingInfo || []), ...newMissingInfo],
+        questions: [...(project.questions || []), ...newQuestions],
+        actors: Array.from(new Set([...(project.actors || []), ...(data.actors || [])])),
+        status: "In Progress"
+      });
+
+      toast.success(language === 'en' ? "Analysis complete!" : "Phân tích AI thành công!");
+      setIsAnalyzing(false);
       router.push(`/projects/${projectId}`);
-    }, 1500);
+
+    } catch (error: any) {
+      console.error(error);
+      setIsAnalyzing(false);
+      toast.error(language === 'en' ? `Analysis failed: ${error.message}` : `Phân tích thất bại: ${error.message}`);
+    }
   };
 
   return (
@@ -107,9 +232,18 @@ export default function SourceEditorPage({ params }: { params: Promise<{ id: str
             <Save className="w-4 h-4 mr-2" />
             {language === 'en' ? 'Save Draft' : 'Lưu Nháp'}
           </Button>
-          <Button onClick={handleSaveAndAnalyze} className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-md">
-            <Sparkles className="w-4 h-4 mr-2" />
-            {language === 'en' ? 'Save & Analyze' : 'Lưu & Phân tích AI'}
+          <Button onClick={handleSaveAndAnalyze} disabled={isAnalyzing} className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-md min-w-[160px]">
+            {isAnalyzing ? (
+              <>
+                <div className="w-4 h-4 mr-2 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                {language === 'en' ? 'Analyzing...' : 'Đang phân tích...'}
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-4 h-4 mr-2" />
+                {language === 'en' ? 'Save & Analyze' : 'Lưu & Phân tích AI'}
+              </>
+            )}
           </Button>
         </div>
       </div>

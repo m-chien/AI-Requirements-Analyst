@@ -39,6 +39,23 @@ public class GeminiClient {
                 - Chỉ viết User Story cho các tính năng được nhắc đến rành mạch trong yêu cầu. Đối với các tính năng suy luận là CÒN THIẾU, CHỈ liệt kê vào Missing Information, TUYỆT ĐỐI KHÔNG tự bịa ra User Story.
                 - Trong User Story, trường [action] phải là hành động chủ động do chính [role] thực hiện. Không viết [role] là Người dùng nhưng [action] lại là việc của Hệ thống.
                 - TUYỆT ĐỐI CHỈ TRẢ VỀ DUY NHẤT MỘT KHỐI JSON. KHÔNG in lại đầu vào của người dùng, KHÔNG viết thêm JSON phụ, KHÔNG có văn bản giải thích.
+                - Định dạng JSON BẮT BUỘC như sau (Sử dụng đúng tên tiếng Anh cho các key, giá trị tiếng Việt):
+                {
+                  "actors": ["Tên tác nhân 1", "Tên tác nhân 2"],
+                  "requirements": [
+                    { "id": "REQ-01", "description": "Mô tả", "type": "Functional", "module": "Tên module" }
+                  ],
+                  "conflicts": ["Mâu thuẫn 1"],
+                  "ambiguities": ["Mơ hồ 1"],
+                  "missingInformation": ["Thông tin thiếu 1"],
+                  "stakeholderQuestions": [
+                    { "question": "Câu hỏi 1", "targetStakeholder": "Người dùng" }
+                  ],
+                  "impactAnalysis": ["Tác động 1"],
+                  "userStories": [
+                    { "role": "Vai trò", "action": "Hành động", "benefit": "Lợi ích", "acceptanceCriteria": ["Tiêu chí 1", "Tiêu chí 2"] }
+                  ]
+                }
                 """;
 
         try {

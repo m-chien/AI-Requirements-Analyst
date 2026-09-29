@@ -7,7 +7,7 @@ import com.example.backend.enums.UserRole;
 import com.example.backend.exception.AppException;
 import com.example.backend.exception.ErrorCode;
 import com.example.backend.mapper.UserMapper;
-import com.example.backend.model.User;
+import com.example.backend.entity.User;
 import com.example.backend.repository.UserRepository;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import jakarta.servlet.http.Cookie;

@@ -1,0 +1,197 @@
+{
+    "actors": [
+        "Nhân viên",
+        "Giám đốc điều hành",
+        "Quản trị viên",
+        "Người dùng hệ thống"
+    ],
+    "requirements": [
+        {
+            "id": "REQ-01",
+            "description": "Người dùng phải đăng nhập vào hệ thống bằng tài khoản email công ty.",
+            "type": "Chức năng",
+            "module": "Xác thực và Phân quyền"
+        },
+        {
+            "id": "REQ-02",
+            "description": "Nhân viên có thể thực hiện đặt phòng họp trước thời điểm diễn ra tối đa 30 ngày.",
+            "type": "Quy tắc nghiệp vụ",
+            "module": "Quản lý Đặt phòng"
+        },
+        {
+            "id": "REQ-03",
+            "description": "Thời lượng của một lượt đặt phòng không được vượt quá 4 giờ liên tiếp.",
+            "type": "Quy tắc nghiệp vụ",
+            "module": "Quản lý Đặt phòng"
+        },
+        {
+            "id": "REQ-04",
+            "description": "Nhân viên có quyền hủy các lịch đặt phòng họp mà mình đã tạo.",
+            "type": "Chức năng",
+            "module": "Quản lý Đặt phòng"
+        },
+        {
+            "id": "REQ-05",
+            "description": "Hệ thống chặn thao tác hủy đặt phòng nếu thời gian thực hiện hủy cách thời gian bắt đầu họp dưới 30 phút.",
+            "type": "Quy tắc nghiệp vụ",
+            "module": "Quản lý Đặt phòng"
+        },
+        {
+            "id": "REQ-06",
+            "description": "Giám đốc điều hành có thể đặt phòng họp tại bất kỳ thời điểm nào mà không bị giới hạn thông thường.",
+            "type": "Chức năng",
+            "module": "Quản lý Đặt phòng"
+        },
+        {
+            "id": "REQ-07",
+            "description": "Giám đốc điều hành đặt phòng họp trống trực tiếp mà không cần phải qua quy trình xin phê duyệt.",
+            "type": "Quy tắc nghiệp vụ",
+            "module": "Quản lý Đặt phòng"
+        }
+    ],
+    "conflicts": [
+        "Xung đột giữa quyền 'đặt phòng bất cứ lúc nào' của Giám đốc điều hành và giới hạn 'không thể đặt phòng quá 4 giờ liên tiếp' hoặc 'đặt trước tối đa 30 ngày'.",
+        "Xung đột giữa quyền 'được phép hủy đặt chỗ' của Nhân viên (theo Nhân sự) và ràng buộc 'không thể hủy nếu thời gian dưới 30 phút trước giờ họp' (theo Quản trị viên)."
+    ],
+    "ambiguities": [
+        "Khái niệm 'đặt phòng bất cứ lúc nào' của Giám đốc điều hành chưa rõ là được phép đặt trước không giới hạn số ngày, đặt ngoài giờ làm việc, hay có quyền ghi đè/chiếm phòng đã có người đặt.",
+        "Cụm từ 'nếu có phòng trống, không cần phải xin phép' ngụ ý rằng các đối tượng khác (như nhân viên) có thể phải qua quy trình phê duyệt khi đặt phòng, nhưng quy trình này chưa được định nghĩa rõ ràng.",
+        "Quy định 'không thể hủy đặt chỗ nếu thời gian đặt chỗ dưới 30 phút trước giờ họp' chưa rõ là thời điểm thực hiện hủy cách thời gian bắt đầu họp dưới 30 phút hay cuộc họp có tổng thời lượng dưới 30 phút."
+    ],
+    "missingInformation": [
+        "Định dạng hoặc hệ thống xác thực email công ty (ví dụ: Google Workspace, Microsoft Azure AD / Office 365, hay OAuth2 nội bộ).",
+        "Quy trình xử lý khi nhân viên bình thường đặt phòng (có cần người phê duyệt không, ai là người duyệt).",
+        "Chính sách xử lý trường hợp phòng đã có người đặt nhưng Giám đốc điều hành cần sử dụng gấp.",
+        "Quy định về thời gian đặt phòng tối thiểu (chỉ mới có thời gian tối đa là 4 giờ).",
+        "Danh sách các phòng họp, sức chứa và thiết bị đi kèm của từng phòng."
+    ],
+    "stakeholderQuestions": [
+        {
+            "question": "Quy định 'đặt phòng bất cứ lúc nào' của Giám đốc điều hành có áp dụng giới hạn thời lượng 4 giờ liên tiếp và giới hạn 30 ngày hay không?",
+            "targetStakeholder": "CEO"
+        },
+        {
+            "question": "Trong trường hợp phòng đã có người đặt trước, Giám đốc điều hành có quyền ưu tiên hủy/chiếm phòng của nhân viên khác hay không?",
+            "targetStakeholder": "CEO"
+        },
+        {
+            "question": "Nhân viên bình thường đặt phòng có phải gửi yêu cầu phê duyệt cho ai không, hay chỉ cần phòng trống là được đặt?",
+            "targetStakeholder": "Bộ phận Nhân sự"
+        },
+        {
+            "question": "Quản trị viên có quyền hủy lịch đặt phòng của người khác trong vòng 30 phút trước giờ họp khi xảy ra sự cố khẩn cấp không?",
+            "targetStakeholder": "Quản trị viên"
+        },
+        {
+            "question": "Hệ thống email công ty sử dụng giao thức xác thực nào (SAML, OAuth2, OpenID Connect với Google Workspace hay Microsoft 365)?",
+            "targetStakeholder": "Bộ phận CNTT"
+        }
+    ],
+    "impactAnalysis": [
+        "Module Đặt phòng họp: Ảnh hưởng trực tiếp đến logic kiểm tra tính khả dụng, thuật toán kiểm tra xung đột lịch và ràng buộc thời lượng tối đa.",
+        "Module Xác thực & Phân quyền: Cần phân chia vai trò người dùng (Nhân viên, Giám đốc điều hành, Quản trị viên) và quản lý phiên đăng nhập SSO/Email công ty.",
+        "Module Phê duyệt & Quy trình: Nếu áp dụng quy trình xin phép đối với nhân viên thường, cần xây dựng thêm luồng phê duyệt và thông báo.",
+        "Module Quản lý Hủy & Hoàn trả tài nguyên: Bị tác động bởi logic chặn hủy trong khoảng thời gian sát giờ họp."
+    ],
+    "userStories": [
+        {
+            "role": "Người dùng hệ thống",
+            "action": "đăng nhập vào hệ thống đặt phòng bằng tài khoản email công ty của mình",
+            "benefit": "tôi có thể sử dụng hệ thống an toàn và đồng bộ thông tin định danh cá nhân",
+            "acceptanceCriteria": [
+                "Chỉ chấp nhận các email có tên miền thuộc quyền sở hữu của công ty.",
+                "Hiển thị thông báo lỗi cụ thể nếu người dùng sử dụng email cá nhân hoặc tài khoản ngoài tổ chức.",
+                "Chuyển hướng thành công vào trang chính sau khi xác thực hợp lệ."
+            ]
+        },
+        {
+            "role": "Nhân viên",
+            "action": "chọn ngày họp trong phạm vi tối đa 30 ngày tới khi đặt phòng họp",
+            "benefit": "tôi có thể lên kế hoạch cho các cuộc họp sắp tới theo đúng quy định của công ty",
+            "acceptanceCriteria": [
+                "Hệ thống cho phép chọn ngày họp từ ngày hiện tại đến tối đa ngày thứ 30 kế tiếp trên lịch.",
+                "Các ngày vượt quá 30 ngày kể từ ngày hiện tại bị vô hiệu hóa và không thể chọn.",
+                "Hiển thị thông báo lỗi nếu người dùng nhập thủ công ngày ngoài phạm vi 30 ngày."
+            ]
+        },
+        {
+            "role": "Nhân viên",
+            "action": "chọn khung giờ đặt phòng không quá 4 giờ liên tiếp",
+            "benefit": "tôi đảm bảo tuân thủ giới hạn sử dụng tài nguyên phòng họp chung của tổ chức",
+            "acceptanceCriteria": [
+                "Hệ thống cho phép chọn khung giờ đặt phòng có tổng thời gian liên tục từ mức tối thiểu đến tối đa 4 giờ.",
+                "Nếu người dùng chọn khung giờ liên tiếp lớn hơn 4 giờ, hệ thống hiển thị cảnh báo vi phạm giới hạn thời gian và không cho lưu lịch đặt.",
+                "Hệ thống tự động tính toán tổng thời gian dựa trên giờ bắt đầu và giờ kết thúc được chọn."
+            ]
+        },
+        {
+            "role": "Nhân viên",
+            "action": "yêu cầu hủy một lịch đặt phòng họp đã đăng ký trước đó",
+            "benefit": "tôi có thể giải phóng phòng họp khi cuộc họp bị hủy hoặc thay đổi kế hoạch",
+            "acceptanceCriteria": [
+                "Danh sách các phòng họp đã đặt của tôi có nút chức năng 'Hủy đặt chỗ'.",
+                "Khi bấm hủy trước giờ bắt đầu cuộc họp từ 30 phút trở lên, hệ thống hiển thị hộp thoại xác nhận hủy.",
+                "Sau khi tôi xác nhận, trạng thái phòng chuyển sang khả dụng cho người khác đặt."
+            ]
+        },
+        {
+            "role": "Nhân viên",
+            "action": "nhận thông báo từ chối khi cố gắng hủy lịch họp trước giờ bắt đầu dưới 30 phút",
+            "benefit": "tôi hiểu rõ quy tắc và phòng họp được duy trì chuẩn bị theo kế hoạch đã cam kết",
+            "acceptanceCriteria": [
+                "Nếu thời gian hiện tại cách thời gian bắt đầu cuộc họp dưới 30 phút, nút hủy bị vô hiệu hóa hoặc bị từ chối xử lý khi tôi nhấn.",
+                "Hệ thống hiển thị thông báo giải thích rõ không thể hủy do vi phạm quy tắc tối thiểu 30 phút trước cuộc họp.",
+                "Lịch đặt phòng vẫn giữ nguyên trạng thái đã đặt."
+            ]
+        },
+        {
+            "role": "Giám đốc điều hành",
+            "action": "đặt lịch phòng họp tại bất kỳ thời điểm nào theo nhu cầu",
+            "benefit": "tôi có thể chủ động sắp xếp các cuộc họp chiến lược quan trọng mà không bị ràng buộc thời gian thông thường",
+            "acceptanceCriteria": [
+                "Tài khoản có vai trò Giám đốc điều hành không bị chặn khi chọn ngày đặt phòng xa hơn 30 ngày.",
+                "Hệ thống ghi nhận thành công các lịch đặt phòng họp do Giám đốc điều hành thực hiện vào bất kỳ thời điểm nào."
+            ]
+        },
+        {
+            "role": "Giám đốc điều hành",
+            "action": "đặt ngay một phòng họp đang trống mà không cần gửi yêu cầu phê duyệt",
+            "benefit": "tôi có thể tổ chức cuộc họp nhanh chóng, giảm thiểu thủ tục hành chính",
+            "acceptanceCriteria": [
+                "Khi tôi chọn một phòng đang ở trạng thái trống, hệ thống xác nhận đặt thành công ngay lập tức.",
+                "Không có bước chuyển tiếp sang trạng thái chờ phê duyệt hay yêu cầu trung gian nào.",
+                "Thông tin đặt phòng được cập nhật ngay trên lịch chung của hệ thống."
+            ]
+        },
+        {
+            "role": "Nhân viên",
+            "action": "xem danh sách các lịch họp mà tôi đã đặt trước đó",
+            "benefit": "tôi có thể theo dõi và quản lý kế hoạch sử dụng phòng họp của bản thân",
+            "acceptanceCriteria": [
+                "Mục lịch sử cá nhân hiển thị đầy đủ các lượt đặt phòng họp do chính tôi tạo kèm trạng thái chi tiết.",
+                "Mỗi lượt đặt hiển thị rõ thời gian bắt đầu, thời gian kết thúc và phòng họp tương ứng.",
+                "Chỉ hiển thị các chức năng thao tác (như hủy) đối với các lịch do chính tôi sở hữu."
+            ]
+        },
+        {
+            "role": "Người dùng hệ thống",
+            "action": "tra cứu danh sách các phòng họp còn trống trong hệ thống",
+            "benefit": "tôi nhanh chóng tìm được phòng phù hợp trước khi quyết định đặt",
+            "acceptanceCriteria": [
+                "Giao diện phân biệt rõ ràng giữa các phòng đang trống và phòng đã được đặt trong từng khung giờ.",
+                "Hiển thị thời gian khả dụng kế tiếp của từng phòng họp.",
+                "Dữ liệu trạng thái phòng được cập nhật theo thời gian thực."
+            ]
+        },
+        {
+            "role": "Nhân viên",
+            "action": "xác nhận việc hủy phòng thành công trên hệ thống",
+            "benefit": "tôi có bằng chứng xác nhận rằng phòng họp đã được hoàn trả hợp lệ",
+            "acceptanceCriteria": [
+                "Hệ thống lưu lại nhật ký gồm: người hủy, thời điểm hủy, và mã lịch đặt phòng.",
+                "Hệ thống gửi thông báo xác nhận việc hủy thành công tới email công ty của người đặt phòng.",
+                "Lịch đặt phòng không còn xuất hiện trong danh sách các cuộc họp sắp tới của người dùng."
+            ]
+        }
+    ]
+}

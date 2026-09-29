@@ -1,6 +1,6 @@
 package com.example.backend.service;
 
-import com.example.backend.model.User;
+import com.example.backend.entity.User;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;

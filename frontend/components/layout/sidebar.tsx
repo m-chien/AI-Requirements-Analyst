@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { Home, FolderKanban, MessageSquareText, History, Settings, UserCircle, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/components/language-provider';
+import { useStore } from '@/store/useStore';
 
 export function Sidebar() {
   const { t } = useLanguage();
+  const { projects, activeProjectId } = useStore();
 
   return (
     <div className="w-64 border-r bg-sidebar h-full flex flex-col">
@@ -45,18 +47,21 @@ export function Sidebar() {
             <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{t('sidebar.recentProjects')}</h3>
           </div>
           <nav className="flex flex-col gap-1">
-            <Link href="/projects/1" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors truncate">
-              <div className="w-2 h-2 rounded-full bg-primary shrink-0" />
-              <span className="truncate">Meeting Room Booking System</span>
-            </Link>
-            <Link href="/projects/2" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors truncate">
-              <div className="w-2 h-2 rounded-full bg-muted-foreground shrink-0" />
-              <span className="truncate">Hospital Management System</span>
-            </Link>
-            <Link href="/projects/3" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors truncate">
-              <div className="w-2 h-2 rounded-full bg-primary shrink-0" />
-              <span className="truncate">E-commerce Platform</span>
-            </Link>
+            {projects.slice(0, 5).map(project => (
+              <Link 
+                key={project.id} 
+                href={`/projects/${project.id}`} 
+                className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors truncate ${activeProjectId === project.id ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`}
+              >
+                <div className={`w-2 h-2 rounded-full shrink-0 ${activeProjectId === project.id ? 'bg-primary' : 'bg-muted-foreground'}`} />
+                <span className="truncate">{project.name}</span>
+              </Link>
+            ))}
+            {projects.length === 0 && (
+              <div className="px-3 py-2 text-xs text-muted-foreground italic">
+                {t('sidebar.noProjects', 'No recent projects')}
+              </div>
+            )}
           </nav>
           <Button variant="ghost" className="w-full justify-start mt-2 text-primary font-medium hover:text-primary hover:bg-primary/5 h-9 px-3 text-sm">
             <Plus className="w-4 h-4 mr-3" />

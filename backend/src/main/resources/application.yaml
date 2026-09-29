@@ -1,17 +1,18 @@
 spring:
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
   ai:
-    google:
-      genai:
-        api-key: "AQ.Ab8RN6JS6b5aLrqG7JSU8lxAKnqwO6XaxCVEMDeNxCjnXY6QDQ"
-        chat:
-          options:
-            model: "gemini-3.8-flash"
+#    google:
+#      genai:
+#        api-key: "AIzaSyC9oqywxfKvshzuMxC7CHMmDsRzaXrHvlg"
+    openai:
+      api-key: "cfut_s8z3H4zVTkZraFErE3oxEwPL0b645RotEFXdugyd59b1824b"
+      base-url: "https://api.cloudflare.com/client/v4/accounts/cd780bf0049574704eccbf0c1f5f622b/ai/v1"
+      chat:
+        options:
+#          model: "gemini-3.8-flash"
+          model: "@cf/meta/llama-3.1-8b-instruct-fp8"
+          max-tokens: 4096
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/AI_Requirements_Analyst
     username: postgres
     password: Minhchien4585!
     driver-class-name: org.postgresql.Driver
@@ -21,7 +22,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

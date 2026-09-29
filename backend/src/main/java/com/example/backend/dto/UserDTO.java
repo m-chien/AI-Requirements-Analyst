@@ -4,12 +4,14 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class UserDTO {
-    private Long id;
+    private UUID id;
     private String email;
     private String fullName;
     private String username;
