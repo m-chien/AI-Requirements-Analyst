@@ -85,10 +85,21 @@ export default function SourceEditorPage({ params }: { params: Promise<{ id: str
     setIsDirty(true);
   };
 
-  const handleSaveDraft = () => {
-    updateSource(projectId, sourceId, sourceData);
-    setIsDirty(false);
-    toast.success(language === 'en' ? "Draft saved successfully." : "Đã lưu bản nháp.");
+  const handleSaveDraft = async () => {
+    try {
+      const res = await fetch(`http://localhost:8080/api/projects/${projectId}/sources/${sourceId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: sourceData.content, status: 'Draft' })
+      });
+      if (res.ok) {
+        updateSource(projectId, sourceId, sourceData);
+        setIsDirty(false);
+        toast.success(language === 'en' ? "Draft saved successfully." : "Đã lưu bản nháp.");
+      }
+    } catch (e) {
+      toast.error("Lỗi khi lưu bản nháp gốc.");
+    }
   };
 
   const handleDiscard = () => {
@@ -100,8 +111,20 @@ export default function SourceEditorPage({ params }: { params: Promise<{ id: str
   };
 
   const handleSaveAndAnalyze = async () => {
-    updateSource(projectId, sourceId, { ...sourceData, status: 'Analyzed' });
-    setIsDirty(false);
+    // 1. Save the source content first
+    try {
+      await fetch(`http://localhost:8080/api/projects/${projectId}/sources/${sourceId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: sourceData.content, status: 'Analyzed' })
+      });
+      updateSource(projectId, sourceId, { ...sourceData, status: 'Analyzed' });
+      setIsDirty(false);
+    } catch (e) {
+      toast.error("Lỗi khi lưu nội dung gốc.");
+      return;
+    }
+
     setIsAnalyzing(true);
     toast.info(language === 'en' ? "Starting AI Analysis... This might take a few seconds." : "Đang phân tích bằng AI... Quá trình này có thể mất vài giây.");
     

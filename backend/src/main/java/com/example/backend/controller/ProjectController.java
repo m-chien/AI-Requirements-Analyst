@@ -109,6 +109,18 @@ public class ProjectController {
         return sourceRepository.save(source);
     }
 
+    @PutMapping("/{id}/sources/{sourceId}")
+    public Source updateSource(@PathVariable UUID id, @PathVariable UUID sourceId, @RequestBody Source request) {
+        Source source = sourceRepository.findById(sourceId).orElseThrow();
+        if (request.getContent() != null) {
+            source.setContent(request.getContent());
+        }
+        if (request.getStatus() != null) {
+            source.setStatus(request.getStatus());
+        }
+        return sourceRepository.save(source);
+    }
+
     @Transactional
     @PutMapping("/{id}/save-review")
     public Project saveReview(@PathVariable UUID id, @RequestBody SaveReviewRequest request) {
@@ -235,18 +247,4 @@ public class ProjectController {
                 .body(md.toString());
     }
 }
-        }
-        
-        ExportedFile file = ExportedFile.builder()
-                .project(project)
-                .fileName(project.getName().replaceAll("\\s+", "_") + "_Requirements.md")
-                .fileFormat("MARKDOWN")
-                .fileUrl("virtual-download")
-                .build();
-        exportedFileRepository.save(file);
-        
-        return org.springframework.http.ResponseEntity.ok()
-                .header("Content-Type", "text/markdown; charset=UTF-8")
-                .body(md.toString());
-    }
-}
+

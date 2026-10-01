@@ -4,7 +4,7 @@ spring:
 #      genai:
 #        api-key: "AIzaSyC9oqywxfKvshzuMxC7CHMmDsRzaXrHvlg"
     openai:
-      api-key: "cfut_s8z3H4zVTkZraFErE3oxEwPL0b645RotEFXdugyd59b1824b"
+      api-key: ${CLOUDFLARE_API_KEY}
       base-url: "https://api.cloudflare.com/client/v4/accounts/cd780bf0049574704eccbf0c1f5f622b/ai/v1"
       chat:
         options:

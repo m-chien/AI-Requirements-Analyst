@@ -91,17 +91,8 @@ export default function AIReviewPage({ params }: { params: Promise<{ id: string 
 
   useEffect(() => {
     setActiveProject(projectId);
-    const storeProject = projects.find(p => p.id === projectId);
-    if (storeProject) {
-      setLocalProject(storeProject);
-      setLocalStories(storeProject.userStories || []);
-      setLocalAmbiguities(storeProject.ambiguities || []);
-      setLocalConflicts(storeProject.conflicts || []);
-      setLocalMissingInfo(storeProject.missingInfo || []);
-      setLocalQuestions(storeProject.questions || []);
-    } else {
-      fetchProject();
-    }
+    // Always fetch fresh data from backend to ensure we get requirements, stories, etc.
+    fetchProject();
   }, [projectId, setActiveProject, fetchProject]);
 
   if (!localProject) {
