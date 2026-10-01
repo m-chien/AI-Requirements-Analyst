@@ -53,10 +53,11 @@ export default function AIReviewPage({ params }: { params: Promise<{ id: string 
 
   const [selectedReq, setSelectedReq] = useState<Requirement | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
   const fetchProject = useCallback(() => {
     setIsLoading(true);
-    fetch(`http://localhost:8080/api/projects/${projectId}`)
+    fetch(`${API_URL}/api/projects/${projectId}`)
       .then(res => res.json())
       .then(data => {
         setLocalProject({
@@ -218,7 +219,7 @@ export default function AIReviewPage({ params }: { params: Promise<{ id: string 
     };
 
     try {
-      const res = await fetch(`http://localhost:8080/api/projects/${projectId}/save-review`, {
+      const res = await fetch(`${API_URL}/api/projects/${projectId}/save-review`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -240,7 +241,7 @@ export default function AIReviewPage({ params }: { params: Promise<{ id: string 
     await handleSaveToDatabase();
     toast.info("Đang tạo file Markdown...");
     try {
-      const res = await fetch(`http://localhost:8080/api/projects/${projectId}/export`, { method: 'POST' });
+      const res = await fetch(`${API_URL}/api/projects/${projectId}/export`, { method: 'POST' });
       if (!res.ok) throw new Error("Export failed");
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
@@ -304,7 +305,7 @@ export default function AIReviewPage({ params }: { params: Promise<{ id: string 
               <Button
                 onClick={async () => {
                   try {
-                    const res = await fetch(`http://localhost:8080/api/projects/${project.id}/sources`, {
+                    const res = await fetch(`${API_URL}/api/projects/${project.id}/sources`, {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify({ title: 'New Source', type: 'Document', content: '' })

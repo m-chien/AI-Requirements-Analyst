@@ -31,10 +31,11 @@ export default function Dashboard() {
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectDesc, setNewProjectDesc] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
   // Lấy danh sách project từ backend khi vào Dashboard
   useEffect(() => {
-    fetch("http://localhost:8080/api/projects")
+    fetch(`${API_URL}/api/projects`)
       .then(res => res.json())
       .then(data => {
         // Backend trả về mảng Project, ta lưu vào Zustand
@@ -61,7 +62,7 @@ export default function Dashboard() {
     if (!newProjectName.trim()) return;
     
     try {
-      const response = await fetch("http://localhost:8080/api/projects", {
+      const response = await fetch(`${API_URL}/api/projects`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -29,6 +29,7 @@ export default function SourceEditorPage({ params }: { params: Promise<{ id: str
   const [sourceData, setSourceData] = useState<SourceDocument | null>(null);
   const [isDirty, setIsDirty] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
   useEffect(() => {
     setActiveProject(projectId);
@@ -41,7 +42,7 @@ export default function SourceEditorPage({ params }: { params: Promise<{ id: str
       setSourceData({ ...storeSource });
     } else {
       setIsLoading(true);
-      fetch(`http://localhost:8080/api/projects/${projectId}`)
+      fetch(`${API_URL}/api/projects/${projectId}`)
         .then(res => res.json())
         .then(data => {
            setLocalProject({
@@ -87,7 +88,7 @@ export default function SourceEditorPage({ params }: { params: Promise<{ id: str
 
   const handleSaveDraft = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/api/projects/${projectId}/sources/${sourceId}`, {
+      const res = await fetch(`${API_URL}/api/projects/${projectId}/sources/${sourceId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: sourceData.content, status: 'Draft' })
@@ -113,7 +114,7 @@ export default function SourceEditorPage({ params }: { params: Promise<{ id: str
   const handleSaveAndAnalyze = async () => {
     // 1. Save the source content first
     try {
-      await fetch(`http://localhost:8080/api/projects/${projectId}/sources/${sourceId}`, {
+      await fetch(`${API_URL}/api/projects/${projectId}/sources/${sourceId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: sourceData.content, status: 'Analyzed' })
@@ -129,7 +130,7 @@ export default function SourceEditorPage({ params }: { params: Promise<{ id: str
     toast.info(language === 'en' ? "Starting AI Analysis... This might take a few seconds." : "Đang phân tích bằng AI... Quá trình này có thể mất vài giây.");
     
     try {
-      const response = await fetch("http://localhost:8080/api/requirements/test-ai", {
+      const response = await fetch(`${API_URL}/api/requirements/test-ai`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
