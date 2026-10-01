@@ -59,7 +59,7 @@ export function Sidebar() {
             ))}
             {projects.length === 0 && (
               <div className="px-3 py-2 text-xs text-muted-foreground italic">
-                {t('sidebar.noProjects', 'No recent projects')}
+                {t('sidebar.noProjects')}
               </div>
             )}
           </nav>
