@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/requirements")
-@CrossOrigin(origins = "*")
+
 public class RequirementController {
 
     @Autowired

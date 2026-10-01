@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/projects")
-@CrossOrigin(origins = "*")
+
 public class ProjectController {
 
     @Autowired private ProjectRepository projectRepository;
