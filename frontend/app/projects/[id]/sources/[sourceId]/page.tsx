@@ -58,10 +58,14 @@ export default function SourceEditorPage({ params }: { params: Promise<{ id: str
            });
            
            // Sync fetched data back to Zustand
-           updateProject(projectId, {
-             sources: data.sources || [],
-             actors: data.actors || []
-           });
+           if (projects.length === 0 || !projects.find(p => p.id === projectId)) {
+             useStore.getState().addProject(data);
+           } else {
+             updateProject(projectId, {
+               sources: data.sources || [],
+               actors: data.actors || []
+             });
+           }
 
            const s = data.sources?.find((s: any) => s.id === sourceId);
            if (s) setSourceData({ ...s });
