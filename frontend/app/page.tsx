@@ -22,8 +22,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { useRouter } from "next/navigation";
-
 function CreateProjectDialog() {
   const { t, language } = useLanguage();
   const { addProject } = useStore();
