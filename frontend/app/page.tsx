@@ -22,14 +22,98 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Dashboard() {
+import { useRouter } from "next/navigation";
+
+function CreateProjectDialog() {
   const { t, language } = useLanguage();
-  const { projects, addProject, setProjects } = useStore();
+  const { addProject } = useStore();
   const router = useRouter();
   
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectDesc, setNewProjectDesc] = useState("");
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
+  const handleCreateProject = async () => {
+    if (!newProjectName.trim()) return;
+    
+    try {
+      const response = await fetch(`${API_URL}/api/projects`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newProjectName, description: newProjectDesc })
+      });
+      if (!response.ok) throw new Error("Failed to create project");
+      
+      const savedProject = await response.json();
+      addProject({
+        ...savedProject,
+        key: newProjectName.substring(0, 3).toUpperCase(),
+        sources: [], requirements: [], userStories: [],
+        ambiguities: [], conflicts: [], missingInfo: [],
+        questions: [], actors: [], updatedAt: "Just now",
+      });
+      setIsCreateOpen(false);
+      setNewProjectName("");
+      setNewProjectDesc("");
+      router.push(`/projects/${savedProject.id}`);
+    } catch (error) {
+      console.error("Error creating project:", error);
+    }
+  };
+
+  return (
+    <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+      <DialogTrigger render={
+        <Button className="shrink-0 bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
+          <Plus className="w-4 h-4 mr-2" />
+          {t('dashboard.createProject')}
+        </Button>
+      } />
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>{language === 'en' ? 'Create New Project' : 'Tạo Dự án mới'}</DialogTitle>
+          <DialogDescription>
+            {language === 'en' ? 'Enter the details of your new AI requirements analysis project.' : 'Nhập thông tin cho dự án phân tích yêu cầu AI mới của bạn.'}
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid gap-2">
+            <Label htmlFor="name">{language === 'en' ? 'Project Name' : 'Tên dự án'}</Label>
+            <Input 
+              id="name" 
+              value={newProjectName}
+              onChange={(e) => setNewProjectName(e.target.value)}
+              placeholder={language === 'en' ? 'e.g. HR Management System' : 'VD: Hệ thống Quản lý Nhân sự'} 
+            />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="description">{language === 'en' ? 'Description' : 'Mô tả'}</Label>
+            <Textarea 
+              id="description" 
+              value={newProjectDesc}
+              onChange={(e) => setNewProjectDesc(e.target.value)}
+              placeholder={language === 'en' ? 'Brief description of the project...' : 'Mô tả ngắn gọn về dự án...'} 
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setIsCreateOpen(false)}>
+            {language === 'en' ? 'Cancel' : 'Hủy'}
+          </Button>
+          <Button onClick={handleCreateProject} disabled={!newProjectName.trim()}>
+            {language === 'en' ? 'Create Project' : 'Tạo dự án'}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export default function Dashboard() {
+  const { t, language } = useLanguage();
+  const { projects, addProject, setProjects } = useStore();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
@@ -58,48 +142,6 @@ export default function Dashboard() {
       });
   }, [setProjects]);
 
-  const handleCreateProject = async () => {
-    if (!newProjectName.trim()) return;
-    
-    try {
-      const response = await fetch(`${API_URL}/api/projects`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          name: newProjectName,
-          description: newProjectDesc
-        })
-      });
-      
-      if (!response.ok) throw new Error("Failed to create project");
-      
-      const savedProject = await response.json();
-      
-      const newProject = {
-        ...savedProject,
-        key: newProjectName.substring(0, 3).toUpperCase(),
-        sources: [],
-        requirements: [],
-        userStories: [],
-        ambiguities: [],
-        conflicts: [],
-        missingInfo: [],
-        questions: [],
-        actors: [],
-        updatedAt: "Just now",
-      };
-      
-      addProject(newProject);
-      setIsCreateOpen(false);
-      setNewProjectName("");
-      setNewProjectDesc("");
-      router.push(`/projects/${savedProject.id}`);
-    } catch (error) {
-      console.error("Error creating project:", error);
-    }
-  };
 
   // Calculate stats
   const totalProjects = projects.length;
@@ -120,51 +162,8 @@ export default function Dashboard() {
           <h1 className="text-3xl font-semibold tracking-tight text-foreground">{t('dashboard.greeting')}, Trần Minh Chiến</h1>
           <p className="text-muted-foreground mt-1">{t('dashboard.subtitle')}</p>
         </div>
-        
-        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-          <DialogTrigger render={
-            <Button className="shrink-0 bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
-              <Plus className="w-4 h-4 mr-2" />
-              {t('dashboard.createProject')}
-            </Button>
-          } />
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>{language === 'en' ? 'Create New Project' : 'Tạo Dự án mới'}</DialogTitle>
-              <DialogDescription>
-                {language === 'en' ? 'Enter the details of your new AI requirements analysis project.' : 'Nhập thông tin cho dự án phân tích yêu cầu AI mới của bạn.'}
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="name">{language === 'en' ? 'Project Name' : 'Tên dự án'}</Label>
-                <Input 
-                  id="name" 
-                  value={newProjectName}
-                  onChange={(e) => setNewProjectName(e.target.value)}
-                  placeholder={language === 'en' ? 'e.g. HR Management System' : 'VD: Hệ thống Quản lý Nhân sự'} 
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="description">{language === 'en' ? 'Description' : 'Mô tả'}</Label>
-                <Textarea 
-                  id="description" 
-                  value={newProjectDesc}
-                  onChange={(e) => setNewProjectDesc(e.target.value)}
-                  placeholder={language === 'en' ? 'Brief description of the project...' : 'Mô tả ngắn gọn về dự án...'} 
-                />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsCreateOpen(false)}>
-                {language === 'en' ? 'Cancel' : 'Hủy'}
-              </Button>
-              <Button onClick={handleCreateProject} disabled={!newProjectName.trim()}>
-                {language === 'en' ? 'Create Project' : 'Tạo dự án'}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <CreateProjectDialog />
+      </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -235,10 +234,7 @@ export default function Dashboard() {
                 <p className="text-sm text-muted-foreground mt-1 mb-4">
                   {language === 'en' ? 'Get started by creating a new project.' : 'Bắt đầu bằng cách tạo một dự án mới.'}
                 </p>
-                <Button onClick={() => setIsCreateOpen(true)} variant="outline">
-                  <Plus className="w-4 h-4 mr-2" />
-                  {t('dashboard.createProject')}
-                </Button>
+                <CreateProjectDialog />
               </div>
             ) : (
               projects.map((project) => {

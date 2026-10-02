@@ -92,11 +92,33 @@ export default function AIReviewPage({ params }: { params: Promise<{ id: string 
 
   useEffect(() => {
     setActiveProject(projectId);
-    // Always fetch fresh data from backend to ensure we get requirements, stories, etc.
-    fetchProject();
-  }, [projectId, setActiveProject, fetchProject]);
+    
+    // Check if Zustand has the project
+    const storeProject = projects.find(p => p.id === projectId);
+    
+    if (storeProject && storeProject.status === "In Progress") {
+      // If status is 'In Progress', it means we JUST analyzed data and saved to Zustand but NOT to DB yet.
+      // So we MUST use Zustand data to preserve the AI results!
+      setLocalProject(storeProject);
+      setLocalStories(storeProject.userStories || []);
+      setLocalAmbiguities(storeProject.ambiguities || []);
+      setLocalConflicts(storeProject.conflicts || []);
+      setLocalMissingInfo(storeProject.missingInfo || []);
+      setLocalQuestions(storeProject.questions || []);
+      
+      const initAnswers: Record<string, { answer: string; saved: boolean; editing: boolean }> = {};
+      (storeProject.questions || []).forEach((q: any) => {
+        initAnswers[q.id] = { answer: q.answer || "", saved: !!q.answer, editing: false };
+      });
+      setAnswerState(initAnswers);
+      setIsLoading(false);
+    } else {
+      // Otherwise, fetch from DB to get the latest saved state
+      fetchProject();
+    }
+  }, [projectId, setActiveProject]); // Do NOT include projects to avoid infinite loops
 
-  if (!localProject) {
+  if (isLoading || !localProject) {
     return <div className="h-full flex items-center justify-center text-muted-foreground animate-pulse">Đang tải dữ liệu dự án...</div>;
   }
 
