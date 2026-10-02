@@ -164,7 +164,6 @@ export default function Dashboard() {
         </div>
         <CreateProjectDialog />
       </div>
-      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="border-none shadow-sm bg-card/50">
