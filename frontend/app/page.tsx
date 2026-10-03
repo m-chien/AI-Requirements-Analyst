@@ -22,6 +22,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+import { toast } from "sonner";
+
 function CreateProjectDialog() {
   const { t, language } = useLanguage();
   const { addProject } = useStore();
@@ -30,18 +32,20 @@ function CreateProjectDialog() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectDesc, setNewProjectDesc] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
   const handleCreateProject = async () => {
     if (!newProjectName.trim()) return;
     
+    setIsCreating(true);
     try {
       const response = await fetch(`${API_URL}/api/projects`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: newProjectName, description: newProjectDesc })
       });
-      if (!response.ok) throw new Error("Failed to create project");
+      if (!response.ok) throw new Error("Failed to create project. Backend might be starting up, please wait a minute.");
       
       const savedProject = await response.json();
       addProject({
@@ -54,9 +58,13 @@ function CreateProjectDialog() {
       setIsCreateOpen(false);
       setNewProjectName("");
       setNewProjectDesc("");
+      toast.success(language === 'en' ? 'Project created successfully!' : 'Tạo dự án thành công!');
       router.push(`/projects/${savedProject.id}`);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating project:", error);
+      toast.error(error.message || "Lỗi kết nối đến máy chủ. Vui lòng thử lại sau.");
+    } finally {
+      setIsCreating(false);
     }
   };
 
@@ -96,11 +104,11 @@ function CreateProjectDialog() {
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setIsCreateOpen(false)}>
+          <Button variant="outline" onClick={() => setIsCreateOpen(false)} disabled={isCreating}>
             {language === 'en' ? 'Cancel' : 'Hủy'}
           </Button>
-          <Button onClick={handleCreateProject} disabled={!newProjectName.trim()}>
-            {language === 'en' ? 'Create Project' : 'Tạo dự án'}
+          <Button onClick={handleCreateProject} disabled={!newProjectName.trim() || isCreating}>
+            {isCreating ? (language === 'en' ? 'Creating...' : 'Đang tạo...') : (language === 'en' ? 'Create Project' : 'Tạo dự án')}
           </Button>
         </DialogFooter>
       </DialogContent>

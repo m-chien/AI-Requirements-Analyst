@@ -20,7 +20,7 @@ public class RequirementController {
 
     @PostMapping("/test-ai")
     public AnalyzeResponse testAi(@RequestBody AnalyzeRequest request) {
-        return geminiClient.testGeminiApi(request.body());
+        return geminiClient.testGeminiApi(request.body(), request.provider());
     }
 
 }

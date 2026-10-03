@@ -63,10 +63,12 @@ export function Sidebar() {
               </div>
             )}
           </nav>
-          <Button variant="ghost" className="w-full justify-start mt-2 text-primary font-medium hover:text-primary hover:bg-primary/5 h-9 px-3 text-sm">
-            <Plus className="w-4 h-4 mr-3" />
-            {t('sidebar.newProject')}
-          </Button>
+          <Link href="/">
+            <Button variant="ghost" className="w-full justify-start mt-2 text-primary font-medium hover:text-primary hover:bg-primary/5 h-9 px-3 text-sm">
+              <Plus className="w-4 h-4 mr-3" />
+              {t('sidebar.newProject')}
+            </Button>
+          </Link>
         </div>
       </div>
 

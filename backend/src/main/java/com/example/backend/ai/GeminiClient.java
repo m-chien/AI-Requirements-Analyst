@@ -4,16 +4,22 @@ import com.example.backend.dto.AnalyzeResponse;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 @Service
 public class GeminiClient {
 
-    private final ChatClient chatClient;
+    private final ChatClient cloudflareChatClient;
+    private final ChatClient geminiChatClient;
 
-    public GeminiClient(ChatClient.Builder chatClientBuilder) {
-        this.chatClient = chatClientBuilder.build();
+    public GeminiClient(@Qualifier("openAiChatModel") ChatModel openAiChatModel, 
+                        @Qualifier("googleGenAiChatModel") ChatModel googleGenAiChatModel) {
+        this.cloudflareChatClient = ChatClient.create(openAiChatModel);
+        this.geminiChatClient = ChatClient.create(googleGenAiChatModel);
     }
 
-    public AnalyzeResponse testGeminiApi(String content) {
+    public AnalyzeResponse testGeminiApi(String content, String provider) {
         String systemPrompt = """
                 Bạn là một Chuyên viên Phân tích Yêu cầu AI (AI Requirements Analyst).
 
@@ -59,7 +65,8 @@ public class GeminiClient {
                 """;
 
         try {
-            return this.chatClient.prompt()
+            ChatClient activeClient = "gemini".equalsIgnoreCase(provider) ? geminiChatClient : cloudflareChatClient;
+            return activeClient.prompt()
                     .system(systemPrompt)
                     .user(content)
                     .call()

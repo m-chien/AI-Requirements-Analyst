@@ -2,9 +2,9 @@ spring:
   config:
     import: optional:file:.env[.properties]
   ai:
-#    google:
-#      genai:
-#        api-key: "AIzaSyC9oqywxfKvshzuMxC7CHMmDsRzaXrHvlg"
+    google:
+      genai:
+        api-key: "AIzaSyC9oqywxfKvshzuMxC7CHMmDsRzaXrHvlg"
     openai:
       api-key: ${CLOUDFLARE_API_KEY}
       base-url: "https://api.cloudflare.com/client/v4/accounts/cd780bf0049574704eccbf0c1f5f622b/ai/v1"

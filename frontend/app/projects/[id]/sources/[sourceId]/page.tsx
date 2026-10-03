@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   ArrowLeft, Save, Sparkles, FileText, Calendar, Clock, RotateCcw, AlertCircle
 } from "lucide-react";
@@ -29,6 +30,7 @@ export default function SourceEditorPage({ params }: { params: Promise<{ id: str
   const [sourceData, setSourceData] = useState<SourceDocument | null>(null);
   const [isDirty, setIsDirty] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [aiProvider, setAiProvider] = useState<string>("gemini");
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
   useEffect(() => {
@@ -139,7 +141,7 @@ export default function SourceEditorPage({ params }: { params: Promise<{ id: str
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ body: sourceData.content })
+        body: JSON.stringify({ body: sourceData.content, provider: aiProvider })
       });
 
       if (!response.ok) {
@@ -252,6 +254,15 @@ export default function SourceEditorPage({ params }: { params: Promise<{ id: str
           </div>
         </div>
         <div className="flex items-center gap-3">
+          <Select value={aiProvider} onValueChange={(val) => setAiProvider(val || "gemini")}>
+            <SelectTrigger className="w-[140px] bg-background">
+              <SelectValue placeholder="AI Model" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="gemini">Gemini</SelectItem>
+              <SelectItem value="cloudflare">Cloudflare AI</SelectItem>
+            </SelectContent>
+          </Select>
           <Button variant="ghost" onClick={() => router.push(`/projects/${projectId}`)}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             {language === 'en' ? 'Back' : 'Quay lại'}
