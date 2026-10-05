@@ -33,7 +33,7 @@ public class GeminiClient {
                 5. Phát hiện các yêu cầu mâu thuẫn/xung đột.
                 6. Phát hiện các thông tin còn thiếu.
                 7. Tạo ra các câu hỏi làm rõ có ý nghĩa cho các bên liên quan.
-                8. Tạo ra các User Stories (cố gắng tạo ít nhất 10 User Stories nếu ngữ cảnh cho phép).
+                8. Tạo ra các User Stories tập trung vào luồng nghiệp vụ chính. Có thể gộp các hành động tương đồng của cùng một vai trò vào chung một User Story để tránh dài dòng. Tuyệt đối không tạo User Story riêng cho các kịch bản báo lỗi (negative cases) trừ khi thực sự cần thiết.
                 9. Xây dựng Tiêu chí chấp nhận (Acceptance Criteria) rõ ràng cho từng User Story.
                 10. Xác định những phần nào của hệ thống có thể bị ảnh hưởng khi yêu cầu thay đổi (Phân tích tác động - Impact Analysis).
 

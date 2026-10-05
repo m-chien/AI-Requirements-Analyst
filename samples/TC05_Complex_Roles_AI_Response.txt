@@ -1,0 +1,187 @@
+{
+    "actors": [
+        "Nhân viên bình thường",
+        "Trưởng phòng",
+        "Giám đốc",
+        "Quản trị hệ thống",
+        "Bảo vệ"
+    ],
+    "requirements": [
+        {
+            "id": "REQ-01",
+            "description": "Nhân viên bình thường chỉ có quyền đặt phòng họp Tiêu chuẩn.",
+            "type": "Functional",
+            "module": "Quản lý Đặt phòng"
+        },
+        {
+            "id": "REQ-02",
+            "description": "Trưởng phòng có quyền đặt phòng họp Tiêu chuẩn và phòng họp VIP.",
+            "type": "Functional",
+            "module": "Quản lý Đặt phòng"
+        },
+        {
+            "id": "REQ-03",
+            "description": "Giám đốc có quyền đặt bất kỳ loại phòng họp nào trong hệ thống.",
+            "type": "Functional",
+            "module": "Quản lý Đặt phòng"
+        },
+        {
+            "id": "REQ-04",
+            "description": "Giám đốc có quyền hủy lịch đặt phòng của Trưởng phòng khi có cuộc họp khẩn cấp.",
+            "type": "Functional",
+            "module": "Quản lý Đặt phòng"
+        },
+        {
+            "id": "REQ-05",
+            "description": "Quản trị hệ thống có quyền cấu hình danh mục loại phòng họp.",
+            "type": "Functional",
+            "module": "Quản trị Cấu hình"
+        },
+        {
+            "id": "REQ-06",
+            "description": "Quản trị hệ thống có quyền cấu hình sức chứa của các phòng họp.",
+            "type": "Functional",
+            "module": "Quản trị Cấu hình"
+        },
+        {
+            "id": "REQ-07",
+            "description": "Hệ thống ngăn chặn Quản trị hệ thống thực hiện thao tác tự đặt phòng họp.",
+            "type": "Functional",
+            "module": "Phân quyền Hệ thống"
+        }
+    ],
+    "conflicts": [],
+    "ambiguities": [
+        "Thuật ngữ 'Bảo vệ' ở đầu yêu cầu chưa rõ là tên người đóng góp ý kiến hay là một vai trò/tác nhân vận hành trong hệ thống.",
+        "Khái niệm 'cuộc họp khẩn cấp' chưa có tiêu chí kỹ thuật hoặc quy trình xác thực cụ thể để kích hoạt quyền hủy phòng.",
+        "Cụm từ 'bất kỳ loại phòng nào' của Giám đốc chưa chỉ định rõ có bao gồm các loại phòng đặc thù ngoài Tiêu chuẩn và VIP hay không."
+    ],
+    "missingInformation": [
+        "Chưa có thông tin về việc Giám đốc có được hủy lịch đặt phòng của Nhân viên bình thường hoặc Giám đốc khác hay không.",
+        "Chưa có quy định về cơ chế thông báo cho Trưởng phòng khi lịch đặt bị Giám đốc hủy bỏ.",
+        "Thiếu quy trình hoàn tác hoặc chuyển đổi phòng thay thế cho Trưởng phòng bị hủy lịch.",
+        "Chưa có quy định về thời gian đặt trước tối đa, tối thiểu hoặc thời lượng họp cho từng vai trò.",
+        "Chưa làm rõ quy tắc xử lý khi Quản trị hệ thống chỉnh sửa hoặc xóa loại phòng đang có lịch đặt trước."
+    ],
+    "stakeholderQuestions": [
+        {
+            "question": "Từ khóa 'Bảo vệ' trong mô tả đóng vai trò gì trong hệ thống hay chỉ là chức danh của người cung cấp yêu cầu?",
+            "targetStakeholder": "Người đại diện nghiệp vụ (Business Owner)"
+        },
+        {
+            "question": "Làm thế nào để hệ thống nhận diện và xác thực một cuộc họp là 'khẩn cấp' khi Giám đốc thực hiện hủy lịch của Trưởng phòng?",
+            "targetStakeholder": "Giám đốc"
+        },
+        {
+            "question": "Giám đốc có quyền hủy lịch đặt phòng của Nhân viên bình thường khi cần phòng khẩn cấp hay không?",
+            "targetStakeholder": "Giám đốc"
+        },
+        {
+            "question": "Hệ thống có cần gửi thông báo (email/SMS/thông báo ứng dụng) cho Trưởng phòng khi lịch đặt của họ bị hủy khẩn cấp không?",
+            "targetStakeholder": "Trưởng phòng"
+        },
+        {
+            "question": "Ngoài phòng Tiêu chuẩn và phòng VIP, hệ thống dự kiến sẽ có những loại phòng họp nào khác?",
+            "targetStakeholder": "Quản trị hệ thống"
+        }
+    ],
+    "impactAnalysis": [
+        "Thay đổi quyền hạn đặt phòng sẽ tác động trực tiếp đến Module Phân quyền (RBAC) và logic kiểm tra điều kiện đặt phòng trong Module Quản lý Đặt phòng.",
+        "Việc thay đổi cấu hình loại phòng và sức chứa của Quản trị hệ thống sẽ tác động đến dữ liệu lịch đặt hiện tại và tính khả dụng của phòng.",
+        "Tính năng hủy lịch khẩn cấp của Giám đốc tác động đến trạng thái đơn đặt phòng và cơ chế gửi thông báo trong toàn hệ thống."
+    ],
+    "userStories": [
+        {
+            "role": "Nhân viên bình thường",
+            "action": "thực hiện thao tác đặt phòng họp Tiêu chuẩn",
+            "benefit": "đảm bảo có không gian họp đúng quy chuẩn cho công việc thường nhật",
+            "acceptanceCriteria": [
+                "Hệ thống hiển thị danh sách các phòng họp có loại là Tiêu chuẩn đang trống.",
+                "Hệ thống cho phép Nhân viên bình thường chọn và xác nhận đặt phòng Tiêu chuẩn thành công.",
+                "Hệ thống không cho phép hoặc ẩn lựa chọn đặt phòng VIP và các loại phòng khác đối với Nhân viên bình thường."
+            ]
+        },
+        {
+            "role": "Trưởng phòng",
+            "action": "thực hiện thao tác đặt phòng họp Tiêu chuẩn",
+            "benefit": "phục vụ nhu cầu trao đổi công việc nội bộ định kỳ của bộ phận",
+            "acceptanceCriteria": [
+                "Hệ thống hiển thị danh sách các phòng Tiêu chuẩn còn trống cho Trưởng phòng lựa chọn.",
+                "Trưởng phòng có thể gửi yêu cầu đặt phòng Tiêu chuẩn và nhận thông báo thành công."
+            ]
+        },
+        {
+            "role": "Trưởng phòng",
+            "action": "thực hiện thao tác đặt phòng họp VIP",
+            "benefit": "tổ chức các cuộc họp quan trọng với đối tác hoặc cấp quản lý",
+            "acceptanceCriteria": [
+                "Hệ thống hiển thị danh sách các phòng họp loại VIP còn trống cho Trưởng phòng.",
+                "Hệ thống cho phép Trưởng phòng xác nhận đặt phòng VIP khi phòng còn thời gian trống phù hợp."
+            ]
+        },
+        {
+            "role": "Giám đốc",
+            "action": "chọn và đặt bất kỳ loại phòng họp nào trong hệ thống",
+            "benefit": "linh hoạt bố trí không gian họp phù hợp với tính chất sự kiện cấp cao",
+            "acceptanceCriteria": [
+                "Hệ thống hiển thị toàn bộ các loại phòng họp khả dụng (Tiêu chuẩn, VIP và các loại khác nếu có).",
+                "Giám đốc có thể đặt thành công bất kỳ phòng nào mà không bị giới hạn bởi phân loại phòng."
+            ]
+        },
+        {
+            "role": "Giám đốc",
+            "action": "thực hiện hủy lịch đặt phòng của Trưởng phòng khi có cuộc họp khẩn cấp",
+            "benefit": "ưu tiên giải quyết ngay lập tức các vấn đề cấp bách của tổ chức",
+            "acceptanceCriteria": [
+                "Hệ thống cho phép Giám đốc xem danh sách các phòng đang được Trưởng phòng đặt.",
+                "Giám đốc có thể chọn thao tác hủy lịch của Trưởng phòng với lý do khẩn cấp.",
+                "Trạng thái lịch đặt của Trưởng phòng được cập nhật thành đã hủy sau khi Giám đốc xác nhận."
+            ]
+        },
+        {
+            "role": "Quản trị hệ thống",
+            "action": "tạo mới và chỉnh sửa danh mục loại phòng họp",
+            "benefit": "chuẩn hóa việc phân loại tài nguyên phòng họp theo nhu cầu doanh nghiệp",
+            "acceptanceCriteria": [
+                "Quản trị hệ thống có giao diện quản lý để thêm mới, sửa tên hoặc trạng thái loại phòng họp.",
+                "Dữ liệu loại phòng được cập nhật chính xác vào cơ sở dữ liệu."
+            ]
+        },
+        {
+            "role": "Quản trị hệ thống",
+            "action": "thiết lập và cập nhật sức chứa cho từng phòng họp",
+            "benefit": "đảm bảo việc bố trí số lượng người tham dự họp tuân thủ đúng quy định an toàn và tiện ích phòng",
+            "acceptanceCriteria": [
+                "Quản trị hệ thống có thể nhập và cập nhật số người tối đa cho từng phòng họp.",
+                "Hệ thống lưu lại thông tin sức chứa và áp dụng cho các thông tin hiển thị phòng."
+            ]
+        },
+        {
+            "role": "Quản trị hệ thống",
+            "action": "truy cập vào màn hình cấu hình phòng họp",
+            "benefit": "giám sát và kiểm soát đầy đủ danh mục phòng họp của công ty",
+            "acceptanceCriteria": [
+                "Hệ thống hiển thị toàn bộ danh sách phòng họp kèm loại phòng và sức chứa tương ứng.",
+                "Quản trị hệ thống có thể tra cứu và lọc danh sách phòng theo các thông số cấu hình."
+            ]
+        },
+        {
+            "role": "Quản trị hệ thống",
+            "action": "thực hiện thao tác trên hệ thống để kiểm tra giới hạn quyền đặt phòng",
+            "benefit": "tuân thủ nguyên tắc tách biệt giữa quyền quản trị và quyền người dùng thông thường",
+            "acceptanceCriteria": [
+                "Giao diện của Quản trị hệ thống không hiển thị chức năng tự đặt phòng họp.",
+                "Nếu Quản trị hệ thống cố ý gọi API hoặc thực hiện thao tác đặt phòng, hệ thống sẽ từ chối và báo lỗi phân quyền."
+            ]
+        },
+        {
+            "role": "Nhân viên bình thường",
+            "action": "truy cập danh sách phòng họp trên giao diện",
+            "benefit": "nắm rõ các phòng Tiêu chuẩn được phép sử dụng trước khi đăng ký",
+            "acceptanceCriteria": [
+                "Danh sách phòng họp chỉ cho phép Nhân viên bình thường bấm chọn đặt các phòng loại Tiêu chuẩn.",
+                "Các phòng loại VIP hoặc loại khác ở trạng thái bị vô hiệu hóa đặt hoặc hiển thị cảnh báo không đủ quyền."
+            ]
+        }
+    ]
+}
