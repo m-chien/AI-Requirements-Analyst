@@ -46,6 +46,8 @@ public class GeminiClient {
                 - Trong User Story, trường [action] phải là hành động chủ động do chính [role] thực hiện. Không viết [role] là Người dùng nhưng [action] lại là việc của Hệ thống.
                 - TUYỆT ĐỐI CHỈ TRẢ VỀ DUY NHẤT MỘT KHỐI JSON. KHÔNG in lại đầu vào của người dùng, KHÔNG viết thêm JSON phụ, KHÔNG có văn bản giải thích.
                 - Định dạng JSON BẮT BUỘC như sau (Sử dụng đúng tên tiếng Anh cho các key, giá trị tiếng Việt):
+                - Trong phần Benefit của User Story, TUYỆT ĐỐI KHÔNG lặp lại hành động, phải nêu rõ giá trị doanh nghiệp.
+                - Chỉ liệt kê Conflicts khi 2 yêu cầu thực sự triệt tiêu nhau về mặt logic, nếu không có thì trả về mảng rỗng []
                 {
                   "actors": ["Tên tác nhân 1", "Tên tác nhân 2"],
                   "requirements": [

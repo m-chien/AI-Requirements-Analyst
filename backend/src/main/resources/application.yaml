@@ -5,6 +5,9 @@ spring:
     google:
       genai:
         api-key: "AIzaSyC9oqywxfKvshzuMxC7CHMmDsRzaXrHvlg"
+        chat:
+          options:
+            model: "gemini-3.8-flash"
     openai:
       api-key: ${CLOUDFLARE_API_KEY}
       base-url: "https://api.cloudflare.com/client/v4/accounts/cd780bf0049574704eccbf0c1f5f622b/ai/v1"
